@@ -25,15 +25,18 @@
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            flex-direction: column;
+            align-items: center;
         }
         .comic-detail img {
             width: auto;
             height: 400px;
             border-radius: 8px;
-            margin-right: 20px;
+            margin-bottom: 20px;
         }
         .comic-detail .details {
             flex: 1;
+            text-align: center;
         }
         .comic-detail h2 {
             font-size: 24px;
@@ -61,7 +64,28 @@
         }
         .button-container a:hover {
             background-color: #0056b3;
-        } @media (max-width: 768px) {
+        }
+        .chapter-list {
+            margin: 20px 0;
+            text-align: left;
+            width: 100%;
+        }
+        .chapter-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .chapter-list li {
+            margin: 5px 0;
+        }
+        .chapter-list a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .chapter-list a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
             .comic-detail {
                 flex-direction: column;
                 align-items: center;
@@ -70,7 +94,6 @@
                 max-height: 300px;
             }
         }
-        
         @media (max-width: 480px) {
             .comic-detail {
                 padding: 10px;
@@ -90,7 +113,9 @@
 </head>
 <body>
     <h1>Chi Tiết Truyện</h1>
-    <div class="comic-detail" id="comic-detail"></div>
+    <div class="comic-detail" id="comic-detail">
+        <!-- Thông tin truyện và danh sách chương sẽ được hiển thị ở đây -->
+    </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -104,6 +129,9 @@
 
         function renderComicDetails(comic) {
             const detailContainer = document.getElementById('comic-detail');
+            const chapters = comic.chapters[0].server_data;
+            
+            // Render thông tin truyện
             detailContainer.innerHTML = `
                 <img src="https://img.otruyenapi.com/uploads/comics/${comic.thumb_url}" alt="${comic.name}">
                 <div class="details">
@@ -117,6 +145,23 @@
                     </div>
                 </div>
             `;
+            
+            // Render danh sách chương
+            const chapterListEl = document.createElement('div');
+            chapterListEl.className = 'chapter-list';
+            const ul = document.createElement('ul');
+
+            chapters.forEach(chapter => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `MangaDetails.html?slug=${slug}&chapter=${encodeURIComponent(chapter.chapter_api_data)}`;
+                a.textContent = `Chương ${chapter.chapter_name}`;
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+
+            chapterListEl.appendChild(ul);
+            detailContainer.appendChild(chapterListEl);
         }
 
         async function loadComicDetails() {

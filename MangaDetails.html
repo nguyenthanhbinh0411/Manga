@@ -36,7 +36,7 @@
         #chapter-content img {
             width: 70%;
             max-width: 100%;
-            margin: 10px 0;
+            margin: 0;
         }
         .new-comics {
             margin-top: 20px;
@@ -98,8 +98,10 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const apiUrl = new URLSearchParams(window.location.search).get('slug');
-            const mangaApiUrl = `https://otruyenapi.com/v1/api/truyen-tranh/${apiUrl}`;
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+            const chapterUrl = urlParams.get('chapter'); // Lấy URL của chương từ tham số
+            const mangaApiUrl = `https://otruyenapi.com/v1/api/truyen-tranh/${slug}`;
             const newComicsApiUrl = "https://otruyenapi.com/v1/api/danh-sach/hoan-thanh";
             let chapters = [];
             let currentChapterIndex = 0;
@@ -198,14 +200,14 @@
 
                         chapterDropdown.addEventListener("change", () => {
                             currentChapterIndex = parseInt(chapterDropdown.value);
-                            loadChapter(currentChapterIndex);
+                            loadChapter(chapters[currentChapterIndex].chapter_api_data);
                         });
 
                         document.getElementById("prev-chapter").addEventListener("click", () => {
                             if (currentChapterIndex > 0) {
                                 currentChapterIndex--;
                                 chapterDropdown.value = currentChapterIndex;
-                                loadChapter(currentChapterIndex);
+                                loadChapter(chapters[currentChapterIndex].chapter_api_data);
                             }
                         });
 
@@ -213,11 +215,23 @@
                             if (currentChapterIndex < chapters.length - 1) {
                                 currentChapterIndex++;
                                 chapterDropdown.value = currentChapterIndex;
-                                loadChapter(currentChapterIndex);
+                                loadChapter(chapters[currentChapterIndex].chapter_api_data);
                             }
                         });
 
-                        loadChapter(currentChapterIndex);
+                        // Set initial chapter based on URL parameter or default to first chapter
+                        if (chapterUrl) {
+                            const initialChapter = chapters.find(chap => chap.chapter_api_data === decodeURIComponent(chapterUrl));
+                            if (initialChapter) {
+                                currentChapterIndex = chapters.indexOf(initialChapter);
+                                chapterDropdown.value = currentChapterIndex;
+                                loadChapter(initialChapter.chapter_api_data);
+                            } else {
+                                loadChapter(chapters[0].chapter_api_data);
+                            }
+                        } else {
+                            loadChapter(chapters[0].chapter_api_data);
+                        }
                     } else {
                         console.error('API response status not success:', data.status);
                     }
@@ -228,11 +242,9 @@
                     document.getElementById("comic-description").textContent = "Lỗi: Không thể tải dữ liệu truyện tranh.";
                 });
 
-            function loadChapter(index) {
-                const chapter = chapters[index];
-                const chapterApiUrl = chapter.chapter_api_data;
-                console.log('Loading chapter from URL:', chapterApiUrl); 
-                fetch(chapterApiUrl)
+            function loadChapter(apiUrl) {
+                console.log('Loading chapter from URL:', apiUrl); 
+                fetch(apiUrl)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
