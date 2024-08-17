@@ -61,6 +61,30 @@
         }
         .button-container a:hover {
             background-color: #0056b3;
+        } @media (max-width: 768px) {
+            .comic-detail {
+                flex-direction: column;
+                align-items: center;
+            }
+            .comic-detail img {
+                max-height: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .comic-detail {
+                padding: 10px;
+            }
+            .comic-detail h2 {
+                font-size: 20px;
+            }
+            .comic-detail p {
+                font-size: 14px;
+            }
+            .button-container a {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
