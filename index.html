@@ -1,281 +1,264 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Sách Truyện</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .search-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .search-container input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 300px;
-        }
-        .search-container button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .search-container button:hover {
-            background-color: #0056b3;
-        }
-        .filter-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .filter-container select {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin: 5px;
-        }
-        .comic-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-        .comic-item {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #fff;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .comic-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .comic-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-bottom: 1px solid #ddd;
-        }
-        .comic-item a {
-            text-decoration: none;
-            color: #333;
-        }
-        .comic-item h3 {
-            margin: 10px;
-            font-size: 16px;
-            color: #333;
-        }
-        .pagination {
-            text-align: center;
-            margin: 20px;
-        }
-        .pagination .page-info {
-            display: inline-block;
-            margin: 0 10px;
-            font-size: 16px;
-            color: #333;
-        }
-        #error-message {
-            color: red;
-            text-align: center;
-            margin-top: 20px;
-        }
-        @media (max-width: 600px) {
-            .comic-list {
-                grid-template-columns: repeat(2, 1fr); /* Hiển thị 2 truyện trên mỗi dòng */
-            }
-        }
-    </style>
+    <title>ReadingManga</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-    <h1>Danh Sách Truyện</h1>
-    <div class="search-container">
-        <input type="text" id="search-input" placeholder="Tìm kiếm truyện...">
-        <button id="search-btn">Tìm kiếm</button>
+    <div id="preloder">
+        <div class="loader"></div>
     </div>
-    <div class="filter-container">
-        <select id="type-select">
-            <option value="dang-phat-hanh">Đang phát hành</option>
-            <option value="hoan-thanh">Hoàn thành</option>
-            <option value="sap-ra-mat">Sắp ra mắt</option>
-        </select>
-        <select id="genre-select">
-            <option value="">Chọn thể loại</option>
-            <!-- Thể loại sẽ được thêm vào đây bởi JavaScripts -->
-        </select>
-    </div>
-    <div id="error-message"></div>
-    <div class="comic-list" id="comic-list"></div>
-    <div class="pagination" id="pagination"></div>
 
-    <script>
-        const comicList = document.getElementById('comic-list');
-        const pagination = document.getElementById('pagination');
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-        const typeSelect = document.getElementById('type-select');
-        const genreSelect = document.getElementById('genre-select');
-        const errorMessage = document.getElementById('error-message');
-        let currentPage = 1;
-        let searchKeyword = '';
-        let selectedType = '';
-        let selectedGenre = '';
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <a class="navbar-brand" href="#"><i class="bi bi-house-door-fill"></i> Trang Chủ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><i class="bi bi-book-fill"></i> Danh Sách Truyện <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="bi bi-tags-fill"></i> Thể Loại</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="bi bi-envelope-fill"></i> Liên Hệ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><i
+                            class="bi bi-three-dots"></i> Khác</a>
+                </li>
+            </ul>
+            <div class="filter-container ml-3">
+                <select id="type-select" class="form-control">
+                    <option value="dang-phat-hanh">Đang phát hành</option>
+                    <option value="hoan-thanh">Hoàn thành</option>
+                    <option value="sap-ra-mat">Sắp ra mắt</option>
+                </select>
+                <select id="genre-select" class="form-control">
+                    <option value="">Chọn thể loại</option>
+                    <!-- Thể loại sẽ được thêm vào đây bởi JavaScript -->
+                </select>
+            </div>
+            <div class="search-container ml-3">
+                <input type="text" id="search-input" class="form-control" placeholder="Tìm kiếm truyện...">
+                <button id="search-btn" class="btn btn-primary"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </nav>
 
-        async function fetchComics(page, keyword = '', type = '', genre = '') {
-            try {
-                let url = '';
-                if (keyword) {
-                    url = `https://otruyenapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}&page=${page}`;
-                } else if (genre) {
-                    // Sử dụng API đúng để lấy danh sách truyện theo thể loại
-                    url = `https://otruyenapi.com/v1/api/the-loai/${encodeURIComponent(genre)}?page=${page}`;
-                } else if (type) {
-                    url = `https://otruyenapi.com/v1/api/danh-sach/${type}?page=${page}`;
-                } else {
-                    url = `https://otruyenapi.com/v1/api/danh-sach/dang-phat-hanh?page=${page}`; // URL mặc định
-                }
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Danh Sách Truyện</h1>
+        <div id="error-message" class="text-danger text-center"></div>
+        <div class="row comic-list mt-5" id="comic-list"></div>
 
-                console.log('Fetching comics with URL:', url);
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="pagination__option" id="pagination">
 
-                // Fetch dữ liệu truyện
-                const response = await fetch(url);
-                const result = await response.json();
-                const data = result.data;
+                </div>
+            </div>
 
-                if (data && data.items && Array.isArray(data.items)) {
-                    renderComics(data.items);
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="index.js"></script>
+            <script>
+                const comicList = document.getElementById('comic-list');
+                const pagination = document.getElementById('pagination');
+                const searchInput = document.getElementById('search-input');
+                const searchBtn = document.getElementById('search-btn');
+                const typeSelect = document.getElementById('type-select');
+                const genreSelect = document.getElementById('genre-select');
+                const errorMessage = document.getElementById('error-message');
+                let currentPage = 1;
+                let searchKeyword = '';
+                let selectedType = '';
+                let selectedGenre = '';
 
-                    // Phân trang
-                    const paginationData = data.params && data.params.pagination ? data.params.pagination : {};
-                    setupPagination(paginationData);
-
-                    // Fetch thể loại nếu chưa có
-                    if (genreSelect.options.length === 1) { // Chỉ có lựa chọn mặc định
-                        const genresUrl = 'https://otruyenapi.com/v1/api/the-loai'; // API URL để lấy thể loại
-                        const genresResponse = await fetch(genresUrl);
-                        const genresResult = await genresResponse.json();
-                        const genresData = genresResult.data;
-
-                        console.log('Genres data:', genresData);
-
-                        if (genresData && genresData.items && Array.isArray(genresData.items)) {
-                            genreSelect.innerHTML = '<option value="">Chọn thể loại</option>'; // Reset lựa chọn
-                            genresData.items.forEach(genre => {
-                                const option = document.createElement('option');
-                                option.value = genre.slug;
-                                option.textContent = genre.name;
-                                genreSelect.appendChild(option);
-                            });
+                async function fetchComics(page, keyword = '', type = '', genre = '') {
+                    try {
+                        let url = '';
+                        if (keyword) {
+                            url = `https://otruyenapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}&page=${page}`;
+                        } else if (genre) {
+                            url = `https://otruyenapi.com/v1/api/the-loai/${encodeURIComponent(genre)}?page=${page}`;
+                        } else if (type) {
+                            url = `https://otruyenapi.com/v1/api/danh-sach/${type}?page=${page}`;
                         } else {
-                            console.error('Dữ liệu trả về không có mảng "items" hoặc không phải là mảng:', genresData.items);
+                            url = `https://otruyenapi.com/v1/api/danh-sach/dang-phat-hanh?page=${page}`;
                         }
+
+                        console.log('Fetching comics with URL:', url);
+
+                        const response = await fetch(url);
+                        const result = await response.json();
+                        const data = result.data;
+
+                        if (data && data.items && Array.isArray(data.items)) {
+                            renderComics(data.items);
+
+                            const paginationData = data.params && data.params.pagination ? data.params.pagination : {};
+                            setupPagination(paginationData);
+
+                            if (genreSelect.options.length === 1) {
+                                const genresUrl = 'https://otruyenapi.com/v1/api/the-loai';
+                                const genresResponse = await fetch(genresUrl);
+                                const genresResult = await genresResponse.json();
+                                const genresData = genresResult.data;
+
+                                console.log('Genres data:', genresData);
+
+                                if (genresData && genresData.items && Array.isArray(genresData.items)) {
+                                    genreSelect.innerHTML = '<option value="">Chọn thể loại</option>';
+                                    genresData.items.forEach(genre => {
+                                        const option = document.createElement('option');
+                                        option.value = genre.slug;
+                                        option.textContent = genre.name;
+                                        genreSelect.appendChild(option);
+                                    });
+                                } else {
+                                    console.error('Dữ liệu trả về không có mảng "items" hoặc không phải là mảng:', genresData.items);
+                                }
+                            }
+                        } else {
+                            console.error("Dữ liệu trả về không có mảng 'items' hoặc không phải là mảng:", data.items);
+                            errorMessage.textContent = 'Không có dữ liệu truyện.';
+                        }
+                    } catch (error) {
+                        console.error("Đã xảy ra lỗi khi fetch dữ liệu:", error);
+                        errorMessage.textContent = 'Không thể tải dữ liệu truyện.';
                     }
-                } else {
-                    console.error("Dữ liệu trả về không có mảng 'items' hoặc không phải là mảng:", data.items);
-                    errorMessage.textContent = 'Không có dữ liệu truyện.';
                 }
-            } catch (error) {
-                console.error("Đã xảy ra lỗi khi fetch dữ liệu:", error);
-                errorMessage.textContent = 'Không thể tải dữ liệu truyện.';
-            }
-        }
 
-        function renderComics(comics) {
-            comicList.innerHTML = '';
-            comics.forEach(comic => {
-                const comicItem = document.createElement('div');
-                comicItem.classList.add('comic-item');
-                comicItem.innerHTML = `
-                    <a href="TruyenDetails.html?slug=${comic.slug}">
-                        <img src="https://img.otruyenapi.com/uploads/comics/${comic.slug}-thumb.jpg" alt="${comic.name}">
-                        <h3>${comic.name}</h3>
-                    </a>
+                function renderComics(comics) {
+                    comicList.innerHTML = '';
+                    comics.forEach(comic => {
+                        const comicItem = document.createElement('div');
+                        comicItem.classList.add('col-md-4');
+                        comicItem.innerHTML = `
+                    <div class="comic-item">
+                        <a href="TruyenDetails.html?slug=${comic.slug}">
+                            <img src="https://img.otruyenapi.com/uploads/comics/${comic.slug}-thumb.jpg" alt="${comic.name}">
+                            <h3>${comic.name}</h3>
+                        </a>
+                    </div>
                 `;
-                comicList.appendChild(comicItem);
-            });
-        }
-
-        function setupPagination(paginationData) {
-            pagination.innerHTML = '';
-            const currentPage = paginationData.currentPage || 1;
-            const totalItems = paginationData.totalItems || 1;
-            const itemsPerPage = paginationData.itemsPerPage || 1;
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-            if (totalPages > 1) {
-                const paginationControls = document.createElement('div');
-                paginationControls.className = 'pagination-controls';
-
-                if (currentPage > 1) {
-                    const prevButton = document.createElement('button');
-                    prevButton.textContent = 'Previous';
-                    prevButton.addEventListener('click', () => {
-                        fetchComics(currentPage - 1, searchKeyword, selectedType, selectedGenre);
+                        comicList.appendChild(comicItem);
                     });
-                    paginationControls.appendChild(prevButton);
                 }
 
-                const pageInfo = document.createElement('span');
-                pageInfo.className = 'page-info';
-                pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-                paginationControls.appendChild(pageInfo);
+                function setupPagination(paginationData) {
+                    pagination.innerHTML = '';
+                    const currentPage = paginationData.currentPage || 1;
+                    const totalItems = paginationData.totalItems || 1;
+                    const itemsPerPage = paginationData.itemsPerPage || 1;
+                    const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-                if (currentPage < totalPages) {
-                    const nextButton = document.createElement('button');
-                    nextButton.textContent = 'Next';
-                    nextButton.addEventListener('click', () => {
-                        fetchComics(currentPage + 1, searchKeyword, selectedType, selectedGenre);
-                    });
-                    paginationControls.appendChild(nextButton);
+                    if (totalPages > 1) {
+                        const paginationControls = document.createElement('ul');
+                        paginationControls.className = 'pagination justify-content-center';
+
+                        // Prev button
+                        if (currentPage > 1) {
+                            const prevItem = document.createElement('li');
+                            prevItem.className = 'page-item';
+                            prevItem.innerHTML = `<a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>`;
+                            prevItem.addEventListener('click', () => {
+                                fetchComics(currentPage - 1, searchKeyword, selectedType, selectedGenre);
+                            });
+                            paginationControls.appendChild(prevItem);
+                        }
+
+                        // Page buttons
+                        const startPage = Math.max(1, currentPage - 3);
+                        const endPage = Math.min(totalPages, currentPage + 3);
+
+                        for (let page = startPage; page <= endPage; page++) {
+                            const pageItem = document.createElement('li');
+                            pageItem.className = `page-item ${page === currentPage ? 'active' : ''}`;
+                            pageItem.innerHTML = `<a class="page-link" href="#">${page}</a>`;
+                            pageItem.addEventListener('click', (event) => {
+                                event.preventDefault();
+                                fetchComics(page, searchKeyword, selectedType, selectedGenre);
+                            });
+                            paginationControls.appendChild(pageItem);
+                        }
+
+                        // Ellipsis if there are more pages
+                        if (endPage < totalPages) {
+                            const ellipsisItem = document.createElement('li');
+                            ellipsisItem.className = 'page-item disabled';
+                            ellipsisItem.innerHTML = `<span class="page-link">...</span>`;
+                            paginationControls.appendChild(ellipsisItem);
+                        }
+
+                        // Last page button
+                        if (totalPages > endPage) {
+                            const lastPageItem = document.createElement('li');
+                            lastPageItem.className = 'page-item';
+                            lastPageItem.innerHTML = `<a class="page-link" href="#">${totalPages}</a>`;
+                            lastPageItem.addEventListener('click', (event) => {
+                                event.preventDefault();
+                                fetchComics(totalPages, searchKeyword, selectedType, selectedGenre);
+                            });
+                            paginationControls.appendChild(lastPageItem);
+                        }
+
+                        // Next button
+                        if (currentPage < totalPages) {
+                            const nextItem = document.createElement('li');
+                            nextItem.className = 'page-item';
+                            nextItem.innerHTML = `<a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>`;
+                            nextItem.addEventListener('click', () => {
+                                fetchComics(currentPage + 1, searchKeyword, selectedType, selectedGenre);
+                            });
+                            paginationControls.appendChild(nextItem);
+                        }
+
+                        pagination.appendChild(paginationControls);
+                    }
                 }
 
-                pagination.appendChild(paginationControls);
-            }
-        }
+                document.addEventListener('DOMContentLoaded', () => {
+                    fetchComics(currentPage);
 
-        searchBtn.addEventListener('click', () => {
-            searchKeyword = searchInput.value.trim();
-            selectedType = '';
-            selectedGenre = '';
-            currentPage = 1;
-            fetchComics(currentPage, searchKeyword);
-        });
+                    searchBtn.addEventListener('click', () => {
+                        searchKeyword = searchInput.value.trim();
+                        currentPage = 1;
+                        fetchComics(currentPage, searchKeyword, selectedType, selectedGenre);
+                    });
 
-        typeSelect.addEventListener('change', () => {
-            selectedType = typeSelect.value;
-            selectedGenre = '';
-            searchKeyword = '';
-            currentPage = 1;
-            fetchComics(currentPage, '', selectedType);
-        });
+                    typeSelect.addEventListener('change', () => {
+                        selectedType = typeSelect.value;
+                        searchKeyword = '';
+                        currentPage = 1;
+                        fetchComics(currentPage, searchKeyword, selectedType, selectedGenre);
+                    });
 
-        genreSelect.addEventListener('change', () => {
-            selectedGenre = genreSelect.value;
-            selectedType = '';
-            searchKeyword = '';
-            currentPage = 1;
-            fetchComics(currentPage, '', '', selectedGenre);
-        });
-
-        fetchComics(currentPage); // Fetch truyện khi trang được tải lần đầu
-    </script>
+                    genreSelect.addEventListener('change', () => {
+                        selectedGenre = genreSelect.value;
+                        searchKeyword = '';
+                        currentPage = 1;
+                        fetchComics(currentPage, searchKeyword, selectedType, selectedGenre);
+                    });
+                });
+            </script>
 </body>
+
 </html>
