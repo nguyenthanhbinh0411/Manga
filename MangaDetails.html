@@ -106,12 +106,20 @@
             let chapters = [];
             let currentChapterIndex = 0;
 
+            console.log('Slug:', slug);
+            console.log('Chapter URL:', chapterUrl);
+
             // Fetch new comics data
             fetch(newComicsApiUrl)
-                .then(response => response.json())
+                .then(response => {
+                    console.log('New Comics API Response Status:', response.status);
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('New Comics Data:', data);
                     if (data.status === "success") {
                         const newComics = data.data.items.slice(0, 5); // Lấy 5 truyện mới đầu tiên
+                        console.log('New Comics:', newComics);
                         const newComicsList = document.getElementById("new-comics-list");
 
                         newComics.forEach(comic => {
@@ -129,7 +137,8 @@
 
                             // Thêm sự kiện click vào mỗi item
                             li.addEventListener("click", () => {
-                                window.location.href = `comic-detail.html?slug=${comic.slug}`; // Thay đổi link theo ý của bạn
+                                console.log('Comic clicked:', comic.slug);
+                                window.location.href = `MangaDetails.html?slug=${comic.slug}`; // Thay đổi link theo ý của bạn
                             });
 
                             newComicsList.appendChild(li);
@@ -139,7 +148,9 @@
                         const loadMoreBtn = document.getElementById("load-more-btn");
                         loadMoreBtn.addEventListener("click", () => {
                             const currentCount = newComicsList.children.length;
+                            console.log('Current Comic Count:', currentCount);
                             const nextBatch = data.data.items.slice(currentCount, currentCount + 5);
+                            console.log('Next Batch of Comics:', nextBatch);
                             
                             nextBatch.forEach(comic => {
                                 const li = document.createElement("li");
@@ -156,6 +167,7 @@
 
                                 // Thêm sự kiện click vào mỗi item
                                 li.addEventListener("click", () => {
+                                    console.log('Comic clicked:', comic.slug);
                                     window.location.href = `comic-detail.html?slug=${comic.slug}`; // Thay đổi link theo ý của bạn
                                 });
 
@@ -165,6 +177,7 @@
                             // Xóa nút Xem Thêm nếu không còn dữ liệu để hiển thị
                             if (newComicsList.children.length >= data.data.items.length) {
                                 loadMoreBtn.style.display = "none";
+                                console.log('No more comics to load. Hiding "Load More" button.');
                             }
                         });
 
@@ -176,12 +189,14 @@
 
             fetch(mangaApiUrl)
                 .then(response => {
+                    console.log('Manga API Response Status:', response.status);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
+                    console.log('Manga Data:', data);
                     if (data.status === "success") {
                         const comic = data.data.item;
                         chapters = comic.chapters[0].server_data;
@@ -246,6 +261,7 @@
                 console.log('Loading chapter from URL:', apiUrl); 
                 fetch(apiUrl)
                     .then(response => {
+                        console.log('Chapter API Response Status:', response.status);
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
                         }
