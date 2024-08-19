@@ -321,7 +321,7 @@
             margin-top: 20px;
         }
 
-        
+
         @media (max-width: 768px) {
             .comic-content {
                 flex-direction: column;
@@ -351,10 +351,12 @@
             .slider-container {
                 display: none;
             }
-            .nd{
+
+            .nd {
                 display: none;
             }
-            h2{
+
+            h2 {
                 font-size: 20px;
             }
         }
@@ -384,7 +386,8 @@
             .slider-container {
                 display: none;
             }
-            .nd{
+
+            .nd {
                 display: none;
             }
         }
@@ -451,7 +454,7 @@
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
-               
+
             };
 
             const date = new Date(dateString);
@@ -476,6 +479,7 @@
             const detailContainer = document.getElementById('comic-detail');
             const chapters = comic.chapters[0].server_data;
 
+
             // Render thông tin truyện
             detailContainer.querySelector('.main-content').innerHTML = `
     <div class="comic-header">
@@ -496,21 +500,24 @@
         </div>
     </div>
     <div class="nd">
-    <h4 style="margin-top: 15px;">Nội dung chính: <strong>${comic.name}</strong></h4>
-        <p>${comic.content}</p></div>
-        <h2 style="margin-top: 15px;"><strong>Danh sách các chương:</strong></h2>
+        <h4 style="margin-top: 15px;">Nội dung chính: <strong>${comic.name}</strong></h4>
+        <p>${comic.content}</p>
+    </div>
+    <h2 style="margin-top: 15px;"><strong>Danh sách các chương:</strong></h2>
     <div class="chapter-list-container">  
         <div class="chapter-list">
             <ul>
                 ${chapters.map(chapter => `
                     <li>
-                        <a href="MangaDetails.html?slug=${slug}&chapter=${encodeURIComponent(chapter.chapter_api_data)}">Chương ${chapter.chapter_name}</a>
+                        <a href="MangaDetails.html?slug=${slug}&chapter=${encodeURIComponent(chapter.chapter_api_data)}">
+                            Chương ${chapter.chapter_name} 
+                        </a>
                     </li>
                 `).join('')}
             </ul>
         </div>
     </div>
-`;
+    `;
         }
 
         function renderUpcomingComics(comics) {
