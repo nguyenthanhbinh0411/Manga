@@ -219,7 +219,7 @@ body {
     flex: 1; /* Chia đều độ rộng cho mỗi liên kết */
     text-align: center; /* Canh giữa văn bản trong mỗi liên kết */
     color: black; /* Màu chữ mặc định */
-    font-size: 14px; /* Kích thước chữ */
+    font-size: 18px; /* Kích thước chữ */
     font-weight: 500; /* Độ đậm của chữ */
     text-decoration: none; /* Bỏ gạch chân */
     position: relative;
