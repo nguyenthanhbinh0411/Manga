@@ -6,22 +6,147 @@
     <title>Document</title>
 </head>
 <style>
-    
+    /* Mega Menu Styles */
+.mega-menu {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    padding: 20px 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1000;
+}
+
+.mega-menu .mega-menu-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mega-menu .mega-menu-col {
+    flex: 1;
+    padding: 0 15px;
+}
+
+.mega-menu .mega-menu-col h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.mega-menu .mega-menu-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mega-menu .mega-menu-col ul li {
+    margin-bottom: 5px;
+}
+
+.mega-menu .mega-menu-col ul li a {
+    color: #5a5a5a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.mega-menu .mega-menu-col ul li a:hover {
+    color: #007bff;
+}
+
+/* Show the mega menu on hover */
+.navbar-nav .nav-item:hover .mega-menu {
+    display: block;
+}
+
 </style>
 <body>
-    <div class="chapter-list">
-        <h2>Danh sách các chương</h2>
-        <div class="chapter-item">
-            <img src="path/to/chapter-thumbnail.jpg" alt="Chapter Thumbnail">
-            <div class="chapter-info">
-                <h3><a href="chapter-url">Tên Chương 1</a></h3>
-                <p>Ngày cập nhật: 15/08/2024</p>
-                <a href="read-from-start-url" class="read-now-btn">Đọc từ đầu</a>
-                <a href="latest-chapter-url" class="latest-chapter-btn">Đọc chương mới nhất</a>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="header__logo">
+            <a href="index.html"><img src="img/Logo.png" style="width:100px;height:auto;margin-right:20px;" alt="Logo"></a>
         </div>
-        <!-- Các chương khác... -->
-    </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Manga</a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-row">
+                            <div class="mega-menu-col">
+                                <h4>Genres</h4>
+                                <ul>
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Adventure</a></li>
+                                    <li><a href="#">Comedy</a></li>
+                                    <li><a href="#">Drama</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Popular Series</h4>
+                                <ul>
+                                    <li><a href="#">Naruto</a></li>
+                                    <li><a href="#">One Piece</a></li>
+                                    <li><a href="#">Dragon Ball</a></li>
+                                    <li><a href="#">Attack on Titan</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>New Releases</h4>
+                                <ul>
+                                    <li><a href="#">Series 1</a></li>
+                                    <li><a href="#">Series 2</a></li>
+                                    <li><a href="#">Series 3</a></li>
+                                    <li><a href="#">Series 4</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Completed</a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-row">
+                            <div class="mega-menu-col">
+                                <h4>Finished Series</h4>
+                                <ul>
+                                    <li><a href="#">Fullmetal Alchemist</a></li>
+                                    <li><a href="#">Death Note</a></li>
+                                    <li><a href="#">Berserk</a></li>
+                                    <li><a href="#">Bleach</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Classic Manga</h4>
+                                <ul>
+                                    <li><a href="#">Astro Boy</a></li>
+                                    <li><a href="#">Doraemon</a></li>
+                                    <li><a href="#">Slam Dunk</a></li>
+                                    <li><a href="#">Sailor Moon</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-col">
+                                <h4>Staff Picks</h4>
+                                <ul>
+                                    <li><a href="#">Pick 1</a></li>
+                                    <li><a href="#">Pick 2</a></li>
+                                    <li><a href="#">Pick 3</a></li>
+                                    <li><a href="#">Pick 4</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
     
 </body>
 </html>
