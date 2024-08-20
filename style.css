@@ -224,6 +224,7 @@ body {
     text-decoration: none; /* Bỏ gạch chân */
     position: relative;
     transition: color 0.3s ease; /* Hiệu ứng mượt mà khi thay đổi màu chữ */
+    width: auto;
 }
 
 .filter-container a::after {
