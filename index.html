@@ -36,8 +36,11 @@
                             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <div class="search-container ml-lg-4 d-flex align-items-center">
+
+
+                        <div class="collapse navbar-collapse" id="navbarNav" >
+                            <div class="search-container ml-lg-3 d-flex align-items-center">
+
                                 <input type="text" id="search-input" class="form-control mr-2" placeholder="Tìm kiếm truyện...">
                                 <button id="search-btn" class="btn btn-danger">
                                     <i class="bi bi-search"></i> <!-- Icon tìm kiếm -->
@@ -111,7 +114,7 @@
         let searchKeyword = '';
         let selectedType = '';
         let selectedGenre = '';
-    
+        
         async function fetchComics(page, keyword = '', type = '', genre = '') {
             try {
                 let url = '';
@@ -128,15 +131,18 @@
                 const response = await fetch(url);
                 const result = await response.json();
                 const data = result.data;
+        
                 if (data && data.items && Array.isArray(data.items)) {
                     renderComics(data.items);
                     const paginationData = data.params && data.params.pagination ? data.params.pagination : {};
                     setupPagination(paginationData);
+        
                     if (genreButtons.children.length === 0) {
                         const genresUrl = 'https://otruyenapi.com/v1/api/the-loai';
                         const genresResponse = await fetch(genresUrl);
                         const genresResult = await genresResponse.json();
                         const genresData = genresResult.data;
+        
                         console.log('Genres data:', genresData);
                         if (genresData && genresData.items && Array.isArray(genresData.items)) {
                             populateMegaMenu(genresData.items);
@@ -153,7 +159,7 @@
                 errorMessage.textContent = 'Không thể tải dữ liệu truyện.';
             }
         }
-    
+        
         function renderComics(comics) {
             comicList.innerHTML = '';
             comics.forEach(comic => {
@@ -170,16 +176,18 @@
                 comicList.appendChild(comicItem);
             });
         }
-    
+        
         function setupPagination(paginationData) {
             pagination.innerHTML = '';
             const currentPage = paginationData.currentPage || 1;
             const totalItems = paginationData.totalItems || 1;
             const itemsPerPage = paginationData.itemsPerPage || 1;
             const totalPages = Math.ceil(totalItems / itemsPerPage);
+        
             if (totalPages > 1) {
                 const paginationControls = document.createElement('ul');
                 paginationControls.className = 'pagination justify-content-center';
+                
                 // Prev button
                 if (currentPage > 1) {
                     const prevItem = document.createElement('li');
@@ -190,6 +198,7 @@
                     });
                     paginationControls.appendChild(prevItem);
                 }
+        
                 // Page buttons
                 const startPage = Math.max(1, currentPage - 3);
                 const endPage = Math.min(totalPages, currentPage + 3);
@@ -203,6 +212,7 @@
                     });
                     paginationControls.appendChild(pageItem);
                 }
+        
                 // Ellipsis if there are more pages
                 if (endPage < totalPages) {
                     const ellipsisItem = document.createElement('li');
@@ -210,6 +220,7 @@
                     ellipsisItem.innerHTML = `<span class="page-link">...</span>`;
                     paginationControls.appendChild(ellipsisItem);
                 }
+        
                 // Last page button
                 if (totalPages > endPage) {
                     const lastPageItem = document.createElement('li');
@@ -221,6 +232,7 @@
                     });
                     paginationControls.appendChild(lastPageItem);
                 }
+        
                 // Next button
                 if (currentPage < totalPages) {
                     const nextItem = document.createElement('li');
@@ -231,23 +243,24 @@
                     });
                     paginationControls.appendChild(nextItem);
                 }
+        
                 pagination.appendChild(paginationControls);
             }
         }
-    
+        
         function populateMegaMenu(genres) {
             genreButtons.innerHTML = '';
             const numColumns = 4;
             const itemsPerColumn = Math.ceil(genres.length / numColumns);
-    
+        
             for (let i = 0; i < numColumns; i++) {
                 const column = document.createElement('div');
                 column.className = 'genre-column';
-    
+        
                 for (let j = i * itemsPerColumn; j < (i + 1) * itemsPerColumn && j < genres.length; j++) {
                     const genre = genres[j];
                     const button = document.createElement('button');
-                    button.className = 'btn  genre-button';
+                    button.className = 'btn genre-button';
                     button.textContent = genre.name;
                     button.addEventListener('click', () => {
                         selectedGenre = genre.slug;
@@ -258,11 +271,11 @@
                     });
                     column.appendChild(button);
                 }
-    
+        
                 genreButtons.appendChild(column);
             }
         }
-    
+        
         document.addEventListener('DOMContentLoaded', () => {
             fetchComics(currentPage);
             searchBtn.addEventListener('click', () => {
@@ -293,10 +306,38 @@
                 selectedGenre = '';
                 searchKeyword = '';
                 currentPage = 1;
-                fetchComics(currentPage, '', selectedType);
+                fetchComics(currentPage, searchKeyword, selectedType, selectedGenre);
             });
         });
-        fetchComics(currentPage);
+        
+        // Thêm chức năng chuyển hướng cho các mục trong nav
+        document.getElementById('dang-phat-hanh').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'index.html?type=dang-phat-hanh';
+        });
+        
+        document.getElementById('hoan-thanh').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'index.html?type=hoan-thanh';
+        });
+        
+        document.getElementById('sap-ra-mat').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'index.html?type=sap-ra-mat';
+        });
+        
+        // Kiểm tra URL khi trang được tải
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            if (type) {
+                selectedType = type;
+                fetchComics(currentPage, '', selectedType);
+            } else {
+                fetchComics(currentPage);
+            }
+        });
+        
     </script>
 </body>
 </html>

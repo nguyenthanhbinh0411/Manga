@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon"href="img/favicon.png">
+    <link rel="icon" href="img/favicon.png">
     <title>Manga3K</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -14,7 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap">
     <style>
-
         h1 {
             margin: 20px 0;
         }
@@ -74,31 +73,41 @@
             gap: 10px;
             justify-content: flex-start;
         }
+
         .button-container a {
             padding: 10px 20px;
-            background-color: transparent; /* Không có nền */
+            background-color: transparent;
+            /* Không có nền */
             color: black;
-            border: 2px solid red; /* Viền đỏ với độ dày 2px */
-            border-radius: 5px; /* Bo góc liên kết */
+            border: 2px solid red;
+            /* Viền đỏ với độ dày 2px */
+            border-radius: 5px;
+            /* Bo góc liên kết */
             cursor: pointer;
             text-decoration: none;
             font-size: 16px;
             display: inline-block;
             text-align: center;
-            position: relative; /* Để thanh ngang có thể được căn chỉnh chính xác */
-            overflow: hidden; /* Đảm bảo thanh ngang không ra ngoài vùng chứa */
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng chuyển tiếp cho nền, viền, và màu chữ */
+            position: relative;
+            /* Để thanh ngang có thể được căn chỉnh chính xác */
+            overflow: hidden;
+            /* Đảm bảo thanh ngang không ra ngoài vùng chứa */
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            /* Thêm hiệu ứng chuyển tiếp cho nền, viền, và màu chữ */
         }
-        
+
         .button-container a:hover {
-            background-color: red; /* Màu nền đỏ khi hover */
-            color: white; /* Màu chữ trắng khi hover */
-            border-color: red; /* Đảm bảo viền vẫn đỏ khi hover */
+            background-color: red;
+            /* Màu nền đỏ khi hover */
+            color: white;
+            /* Màu chữ trắng khi hover */
+            border-color: red;
+            /* Đảm bảo viền vẫn đỏ khi hover */
         }
-        
-        
-        
-        
+
+
+
+
         .chapter-list-container {
             margin: 20px 0;
             text-align: left;
@@ -383,14 +392,16 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <div class="search-container ml-lg-4 d-flex align-items-center">
-                                <input type="text" id="search-input" class="form-control mr-2" placeholder="Tìm kiếm truyện...">
+                                <input type="text" id="search-input" class="form-control mr-2"
+                                    placeholder="Tìm kiếm truyện...">
                                 <button id="search-btn" class="btn btn-danger">
                                     <i class="bi bi-search"></i> <!-- Icon tìm kiếm -->
                                 </button>
                             </div>
                             <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
                                 <div class="dropdown" id="type-select">
-                                    <a class="btn" type="button" id="genreDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="btn" type="button" id="genreDropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
                                         <i class="bi bi-tags"></i> <!-- Icon thể loại -->
                                         Thể loại
                                     </a>
@@ -402,27 +413,27 @@
                                 </div>
                             </div>
                             <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
-                                
-                                <a href="index.html" id="dang-phat-hanh" data-type="dang-phat-hanh" style="padding: 6px 0;">
+
+                                <a href="" id="dang-phat-hanh" data-type="dang-phat-hanh" style="padding: 6px 0;">
                                     <i class="bi bi-calendar"></i> <!-- Icon đang phát hành -->
                                     Đang phát hành
                                 </a>
                             </div>
                             <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
-                                <a href="index.html" id="hoan-thanh" data-type="hoan-thanh" style="padding: 6px 0;">
+                                <a href="" id="hoan-thanh" data-type="hoan-thanh" style="padding: 6px 0;">
                                     <i class="bi bi-check-circle"></i> <!-- Icon hoàn thành -->
                                     Hoàn thành
                                 </a>
                             </div>
                             <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
-                                <a href="index.html" id="sap-ra-mat" data-type="sap-ra-mat" style="padding: 6px 0;">
+                                <a href="" id="sap-ra-mat" data-type="sap-ra-mat" style="padding: 6px 0;">
                                     <i class="bi bi-clock"></i> <!-- Icon sắp ra mắt -->
                                     Sắp ra mắt
                                 </a>
                             </div>
                         </div>
-                        
-                       
+
+
                     </nav>
                 </div>
             </div>
@@ -621,6 +632,15 @@
 
         loadComicDetails();
         loadUpcomingComics();
+        // Điều hướng khi nhấn vào các link trong navbar
+        document.querySelectorAll('.filter-container a').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của link
+                const type = this.getAttribute('data-type');
+                window.location.href = `index.html?type=${type}`;
+            });
+        });
+
     </script>
 </body>
 
