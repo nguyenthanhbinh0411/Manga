@@ -71,7 +71,24 @@
         .load-more {
             margin-top: 10px;
             margin-bottom: 10px;
+        }.chapter-navigation {
+            position: sticky;
+            top: 0; /* Đặt khoảng cách từ đầu trang khi phần tử dính lên đầu */
+            background-color: #fff; /* Màu nền để phần tử nổi bật trên nền cuộn */
+            border-bottom: 1px solid #ddd; /* Thêm viền dưới để phân cách với nội dung cuộn */
+            padding: 10px; /* Khoảng cách bên trong để tạo không gian */
+            z-index: 1000; /* Đảm bảo phần tử nằm trên các phần tử khác */
+            display: flex; /* Sử dụng flexbox để căn chỉnh các nút và dropdown */
+            justify-content: center; /* Căn giữa các phần tử bên trong */
+            gap: 10px; /* Khoảng cách giữa các phần tử bên trong */
         }
+        
+        .chapter-navigation button,
+        .chapter-navigation select {
+            margin: 0; /* Đảm bảo không có khoảng cách ngoài cho các phần tử */
+            padding: 5px 10px; /* Thêm khoảng cách bên trong cho nút và dropdown */
+        }
+        
     </style>
 </head>
 <body>
@@ -152,7 +169,6 @@
             <button id="next-chapter">Next</button>
         </div>
         <div id="chapter-content"></div>
-        
         <div class="new-comics">
             <h3>Các Bộ Truyện Đang Phát Hành</h3>
             <ul id="new-comics-list"></ul>

@@ -577,7 +577,6 @@
                 </li>
             `).join('');
         }
-
         async function loadComicDetails() {
             const comicData = await fetchComicDetails(slug);
             renderComicDetails(comicData.data.item);
