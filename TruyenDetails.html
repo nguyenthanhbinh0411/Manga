@@ -153,13 +153,13 @@
         .chapter-list a {
             display: block;
             text-decoration: none;
-            color: #007bff;
+            color: black;
             font-size: 16px;
             padding: 10px;
         }
 
         .chapter-list a:hover {
-            color: #0056b3;
+            color: red;
         }
 
 
@@ -228,7 +228,6 @@
 
         .slider-item {
             flex: 0 0 16.6667%;
-            /* Hiển thị 6 truyện mỗi lần */
             box-sizing: border-box;
             padding: 15px;
             transition: transform 0.3s ease;
@@ -280,7 +279,6 @@
             padding: 10px;
             cursor: pointer;
             pointer-events: all;
-            border-radius: 50%;
             outline: none;
             width: 40px;
             height: 40px;
@@ -292,6 +290,9 @@
 
         .nav-buttons button:focus {
             outline: none;
+        }
+        .nav-buttons button:hover {
+            color: red;
         }
 
         .nav-buttons button:active {
@@ -439,7 +440,7 @@
             </div>
         </div>
     </header>
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-md-1"></div>
         <div class="col-md-7">
             <div class="comic-detail" id="comic-detail">

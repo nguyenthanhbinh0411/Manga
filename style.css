@@ -1,8 +1,8 @@
 html,
 body {
-	height: 100%;
+    height: 100%;
     font-family: "Roboto Condensed", sans-serif;
-	-webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Preloader */
@@ -34,11 +34,13 @@ body {
         border-color: #f44336;
         border-left-color: transparent;
     }
+
     50% {
         transform: rotate(180deg);
         border-color: #673ab7;
         border-left-color: transparent;
     }
+
     100% {
         transform: rotate(360deg);
         border-color: #f44336;
@@ -75,17 +77,31 @@ body {
 
 /* Comic List */
 .comic-item {
-    background: none; 
-    border: none; 
+    background: none;
+    border: none;
     overflow: hidden;
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    position: relative;
+    padding-bottom: 10px;
+
 }
 
 .comic-item img {
-    width: 80%;
-    height: 200px;
-    border: none; 
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    width: 100%; /* Đảm bảo hình ảnh bao phủ hết phần tử */
+}
+
+.comic-item:hover img {
+    transform: scale(1.1); /* Phóng to hình ảnh */
+    opacity: 0.9; /* Làm mờ một chút */
+}
+
+
+.comic-item img {
+    width: auto;
+    height: 240px;
+    border: none;
     border-bottom: 1px solid #ddd;
 }
 
@@ -93,6 +109,48 @@ body {
     margin: 10px;
     font-size: 16px;
     color: #333;
+}
+
+.comic-item h3 {
+    color: black;
+}
+
+.comic-item h3 {
+    position: relative;
+    display: inline-block;
+    color: black;
+    transition: color 0.3s ease;
+}
+
+
+.comic-item h3:hover {
+    color: red;
+}
+
+.latest-chapters {
+    text-align: center;
+    padding: 0 10px;
+}
+
+.latest-chapters h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.latest-chapters a {
+    display: block;
+    font-size: 14px;
+    color: black;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+.latest-chapters a:hover {
+    display: block;
+    margin-bottom: 5px;
+
+    color: #f44336;
+    text-decoration: none;
+
 }
 
 .pagination-controls {
@@ -104,6 +162,7 @@ body {
 .pagination-controls button {
     margin: 0 5px;
 }
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -144,23 +203,29 @@ body {
 /* Responsive */
 @media (max-width: 600px) {
     .comic-list {
-        grid-template-columns: repeat(2, 1fr); /* Hiển thị 2 truyện trên mỗi dòng */
+        grid-template-columns: repeat(2, 1fr);
+        /* Hiển thị 2 truyện trên mỗi dòng */
     }
 }
 
 @media (max-width: 400px) {
     .comic-list {
-        grid-template-columns: 1fr; /* Hiển thị 1 truyện trên mỗi dòng */
+        grid-template-columns: 1fr;
+        /* Hiển thị 1 truyện trên mỗi dòng */
     }
 }
+.dropdown:hover .mega-menu {
+    display: block;
+}
+
 .mega-menu {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
     width: 800px;
-    left: 50%; 
-    transform: translateX(-50%); 
-    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%);
+    top: 100%;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     padding: 20px;
@@ -176,11 +241,16 @@ body {
     margin: 5px 0;
     width: 100%;
     text-align: left;
-    background-color: transparent; /* Đặt nền trong suốt */
-    border: none; /* Xóa viền */
-    color: black; /* Màu chữ đen */
-    position: relative; /* Để định vị cho phần tử ::after */
-    padding-bottom: 5px; /* Khoảng cách giữa chữ và thanh ngang */
+    background-color: transparent;
+    /* Đặt nền trong suốt */
+    border: none;
+    /* Xóa viền */
+    color: black;
+    /* Màu chữ đen */
+    position: relative;
+    /* Để định vị cho phần tử ::after */
+    padding-bottom: 5px;
+    /* Khoảng cách giữa chữ và thanh ngang */
 }
 
 .mega-menu .row {
@@ -190,95 +260,134 @@ body {
 }
 
 .genre-column {
-    width: 25%; /* 100% / 4 columns = 25% width per column */
+    width: 25%;
+    /* 100% / 4 columns = 25% width per column */
     padding: 10px;
     box-sizing: border-box;
 }
+
 .genre-button::after {
-    content: ''; /* Không có nội dung */
+    content: '';
+    /* Không có nội dung */
     position: absolute;
     left: 0;
     bottom: 0;
     width: 0;
-    height: 2px; /* Độ dày của thanh ngang */
-    background-color: red; /* Màu của thanh ngang */
-    transition: width 0.3s ease; /* Hiệu ứng mở rộng thanh ngang */
+    height: 2px;
+    /* Độ dày của thanh ngang */
+    background-color: red;
+    /* Màu của thanh ngang */
+    transition: width 0.3s ease;
+    /* Hiệu ứng mở rộng thanh ngang */
 }
 
 .genre-button:hover::after {
-    width: 100%; /* Mở rộng thanh ngang khi hover */
+    width: 100%;
+    /* Mở rộng thanh ngang khi hover */
 }
+
 .filter-container {
     display: flex;
-    gap: 20px; /* Khoảng cách giữa các liên kết */
-    justify-content: center; /* Canh giữa các liên kết */
+    gap: 20px;
+    /* Khoảng cách giữa các liên kết */
+    justify-content: center;
+    /* Canh giữa các liên kết */
     /* Khoảng cách phía trên */
 }
 
 .filter-container a {
-    flex: 1; /* Chia đều độ rộng cho mỗi liên kết */
-    text-align: center; /* Canh giữa văn bản trong mỗi liên kết */
-    color: black; /* Màu chữ mặc định */
-    font-size: 18px; /* Kích thước chữ */
-    font-weight: 500; /* Độ đậm của chữ */
-    text-decoration: none; /* Bỏ gạch chân */
+    flex: 1;
+    /* Chia đều độ rộng cho mỗi liên kết */
+    text-align: center;
+    /* Canh giữa văn bản trong mỗi liên kết */
+    color: black;
+    /* Màu chữ mặc định */
+    font-size: 18px;
+    /* Kích thước chữ */
+    font-weight: 500;
+    /* Độ đậm của chữ */
+    text-decoration: none;
+    /* Bỏ gạch chân */
     position: relative;
-    transition: color 0.3s ease; /* Hiệu ứng mượt mà khi thay đổi màu chữ */
+    transition: color 0.3s ease;
+    /* Hiệu ứng mượt mà khi thay đổi màu chữ */
     width: auto;
 }
 
 .filter-container a::after {
-    content: ''; /* Không có nội dung */
+    content: '';
+    /* Không có nội dung */
     position: absolute;
     left: 0;
     bottom: 0;
     width: 0;
-    height: 2px; /* Độ dày của thanh ngang */
-    background-color: red; /* Màu của thanh ngang */
-    transition: width 0.3s ease; /* Hiệu ứng mở rộng thanh ngang */
+    height: 2px;
+    /* Độ dày của thanh ngang */
+    background-color: red;
+    /* Màu của thanh ngang */
+    transition: width 0.3s ease;
+    /* Hiệu ứng mở rộng thanh ngang */
 }
 
 .filter-container a:hover::after {
-    width: 100%; /* Mở rộng thanh ngang khi hover */
+    width: 100%;
+    /* Mở rộng thanh ngang khi hover */
 }
 
 .filter-container a:hover {
-    color: red; /* Thay đổi màu chữ khi hover */
+    color: red;
+    /* Thay đổi màu chữ khi hover */
 }
+
 #filter-container {
     display: flex;
-    gap: 20px; /* Khoảng cách giữa các liên kết */
-    justify-content: center; /* Canh giữa các liên kết */
+    gap: 20px;
+    /* Khoảng cách giữa các liên kết */
+    justify-content: center;
+    /* Canh giữa các liên kết */
     /* Khoảng cách phía trên */
 }
 
 #filter-container a {
-    flex: 1; /* Chia đều độ rộng cho mỗi liên kết */
-    text-align: center; /* Canh giữa văn bản trong mỗi liên kết */
-    color: black; /* Màu chữ mặc định */
-    font-size: 18px; /* Kích thước chữ */
-    font-weight: 500; /* Độ đậm của chữ */
-    text-decoration: none; /* Bỏ gạch chân */
+    flex: 1;
+    /* Chia đều độ rộng cho mỗi liên kết */
+    text-align: center;
+    /* Canh giữa văn bản trong mỗi liên kết */
+    color: black;
+    /* Màu chữ mặc định */
+    font-size: 18px;
+    /* Kích thước chữ */
+    font-weight: 500;
+    /* Độ đậm của chữ */
+    text-decoration: none;
+    /* Bỏ gạch chân */
     position: relative;
-    transition: color 0.3s ease; /* Hiệu ứng mượt mà khi thay đổi màu chữ */
+    transition: color 0.3s ease;
+    /* Hiệu ứng mượt mà khi thay đổi màu chữ */
     width: auto;
 }
 
 #filter-container a::after {
-    content: ''; /* Không có nội dung */
+    content: '';
+    /* Không có nội dung */
     position: absolute;
     left: 0;
     bottom: 0;
     width: 0;
-    height: 2px; /* Độ dày của thanh ngang */
-    background-color: red; /* Màu của thanh ngang */
-    transition: width 0.3s ease; /* Hiệu ứng mở rộng thanh ngang */
+    height: 2px;
+    /* Độ dày của thanh ngang */
+    background-color: red;
+    /* Màu của thanh ngang */
+    transition: width 0.3s ease;
+    /* Hiệu ứng mở rộng thanh ngang */
 }
 
 #filter-container a:hover::after {
-    width: 100%; /* Mở rộng thanh ngang khi hover */
+    width: 100%;
+    /* Mở rộng thanh ngang khi hover */
 }
 
 #filter-container a:hover {
-    color: red; /* Thay đổi màu chữ khi hover */
+    color: red;
+    /* Thay đổi màu chữ khi hover */
 }
