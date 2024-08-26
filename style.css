@@ -61,14 +61,7 @@ body {
     color: red;
 }
 
-.filter-container select,
-.search-container input {
-    max-width: 200px;
-}
 
-.search-container button {
-    padding: 5px 10px;
-}
 
 .search-container {
     display: flex;
@@ -90,8 +83,8 @@ body {
 }
 
 .comic-item img {
-    width: 60%;
-    height: 300px;
+    width: 80%;
+    height: 200px;
     border: none; 
     border-bottom: 1px solid #ddd;
 }
@@ -231,17 +224,18 @@ body {
     text-decoration: none; /* Bỏ gạch chân */
     position: relative;
     transition: color 0.3s ease; /* Hiệu ứng mượt mà khi thay đổi màu chữ */
+    width: auto;
 }
 
 .filter-container a::after {
-    content: '';
+    content: ''; /* Không có nội dung */
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 100;
-    height: 3px; /* Độ dày của thanh ngang */
+    width: 0;
+    height: 2px; /* Độ dày của thanh ngang */
     background-color: red; /* Màu của thanh ngang */
-    transition: width 0.3s ease; /* Hiệu ứng mượt mà khi mở rộng thanh ngang */
+    transition: width 0.3s ease; /* Hiệu ứng mở rộng thanh ngang */
 }
 
 .filter-container a:hover::after {
@@ -249,5 +243,42 @@ body {
 }
 
 .filter-container a:hover {
+    color: red; /* Thay đổi màu chữ khi hover */
+}
+#filter-container {
+    display: flex;
+    gap: 20px; /* Khoảng cách giữa các liên kết */
+    justify-content: center; /* Canh giữa các liên kết */
+    /* Khoảng cách phía trên */
+}
+
+#filter-container a {
+    flex: 1; /* Chia đều độ rộng cho mỗi liên kết */
+    text-align: center; /* Canh giữa văn bản trong mỗi liên kết */
+    color: black; /* Màu chữ mặc định */
+    font-size: 18px; /* Kích thước chữ */
+    font-weight: 500; /* Độ đậm của chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    position: relative;
+    transition: color 0.3s ease; /* Hiệu ứng mượt mà khi thay đổi màu chữ */
+    width: auto;
+}
+
+#filter-container a::after {
+    content: ''; /* Không có nội dung */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px; /* Độ dày của thanh ngang */
+    background-color: red; /* Màu của thanh ngang */
+    transition: width 0.3s ease; /* Hiệu ứng mở rộng thanh ngang */
+}
+
+#filter-container a:hover::after {
+    width: 100%; /* Mở rộng thanh ngang khi hover */
+}
+
+#filter-container a:hover {
     color: red; /* Thay đổi màu chữ khi hover */
 }
