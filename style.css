@@ -382,7 +382,7 @@ body {
 
 #filter-container a::after {
     content: '';
-    /* Không có nội dung */
+    /* Không có nội dungs */
     position: absolute;
     left: 0;
     bottom: 0;
