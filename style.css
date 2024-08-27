@@ -52,6 +52,13 @@ body {
 .header {
     background-color: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1000; /* Đảm bảo nav nằm trên các phần tử khác */
+
 }
 
 .navbar-custom .navbar-nav .nav-link {
@@ -200,20 +207,26 @@ body {
     cursor: not-allowed;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* Các thiết lập CSS khác... */
+
+.comic-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Mặc định hiển thị 4 cột trên màn hình lớn */
+    gap: 1rem; /* Khoảng cách giữa các phần tử */
+}
+
+@media (max-width: 992px) { /* Điều chỉnh cho màn hình từ 992px đến 600px */
     .comic-list {
-        grid-template-columns: repeat(2, 1fr);
-        /* Hiển thị 2 truyện trên mỗi dòng */
+        grid-template-columns: repeat(3, 1fr); /* Hiển thị 3 cột trên màn hình nhỏ hơn */
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 600px) { /* Điều chỉnh cho màn hình nhỏ hơn 600px */
     .comic-list {
-        grid-template-columns: 1fr;
-        /* Hiển thị 1 truyện trên mỗi dòng */
+        grid-template-columns: repeat(2, 1fr); /* Hiển thị 2 cột trên màn hình rất nhỏ */
     }
 }
+
 .dropdown:hover .mega-menu {
     display: block;
 }
@@ -230,7 +243,6 @@ body {
     z-index: 1;
     padding: 20px;
     box-sizing: border-box;
-    
 }
 
 .mega-menu.show {
@@ -254,6 +266,7 @@ body {
     /* Khoảng cách giữa chữ và thanh ngang */
     
 }
+
 
 .mega-menu .row {
     display: flex;
