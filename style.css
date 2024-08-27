@@ -230,6 +230,7 @@ body {
     z-index: 1;
     padding: 20px;
     box-sizing: border-box;
+    
 }
 
 .mega-menu.show {
@@ -251,6 +252,7 @@ body {
     /* Để định vị cho phần tử ::after */
     padding-bottom: 5px;
     /* Khoảng cách giữa chữ và thanh ngang */
+    
 }
 
 .mega-menu .row {
@@ -289,10 +291,9 @@ body {
 .filter-container {
     display: flex;
     gap: 20px;
-    /* Khoảng cách giữa các liên kết */
     justify-content: center;
-    /* Canh giữa các liên kết */
-    /* Khoảng cách phía trên */
+    text-transform: uppercase; /* Biến thành chữ in hoa */
+    font-family: 'Roboto', sans-serif; /* Sử dụng font Google */
 }
 
 .filter-container a {
@@ -302,7 +303,7 @@ body {
     /* Canh giữa văn bản trong mỗi liên kết */
     color: black;
     /* Màu chữ mặc định */
-    font-size: 18px;
+    font-size: 14px;
     /* Kích thước chữ */
     font-weight: 500;
     /* Độ đậm của chữ */
@@ -342,10 +343,9 @@ body {
 #filter-container {
     display: flex;
     gap: 20px;
-    /* Khoảng cách giữa các liên kết */
     justify-content: center;
-    /* Canh giữa các liên kết */
-    /* Khoảng cách phía trên */
+    text-transform: uppercase; /* Biến thành chữ in hoa */
+    font-family: 'Roboto', sans-serif; /* Sử dụng font Google */
 }
 
 #filter-container a {
@@ -355,7 +355,7 @@ body {
     /* Canh giữa văn bản trong mỗi liên kết */
     color: black;
     /* Màu chữ mặc định */
-    font-size: 18px;
+    font-size: 14px;
     /* Kích thước chữ */
     font-weight: 500;
     /* Độ đậm của chữ */
