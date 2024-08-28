@@ -83,13 +83,21 @@ body {
 .search-container input {
     margin-right: 10px;
 }
-
+.container {
+    background-color: #fff; /* Màu nền cho container */
+    padding: 40px; /* Khoảng cách bên trong */
+    border-radius: 10px; /* Bo tròn góc */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng để nổi lên */
+    position: relative;
+    z-index: 1; /* Đảm bảo container nổi trên các phần tử khác */
+    margin-bottom: 30px; /* Khoảng cách phía dưới */
+}
 /* Comic List */
 .comic-item {
     background: none;
     border: none;
     overflow: hidden;
-    text-align: center;
+    text-align: left;
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
     position: relative;
     padding-bottom: 10px;
@@ -97,70 +105,55 @@ body {
 }
 
 .comic-item img {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    width: 100%; /* Đảm bảo hình ảnh bao phủ hết phần tử */
-}
-
-.comic-item:hover img {
-    transform: scale(1.1); /* Phóng to hình ảnh */
-    opacity: 0.9; /* Làm mờ một chút */
-}
-
-
-.comic-item img {
-    width: auto;
+    width: 100%;
     height: 240px;
     border: none;
     border-bottom: 1px solid #ddd;
 }
 
 .comic-item h3 {
-    margin: 10px;
-    font-size: 16px;
+    font-size: 18px;
     color: #333;
-}
-
-.comic-item h3 {
-    color: black;
-}
-
-.comic-item h3 {
     position: relative;
     display: inline-block;
     color: black;
     transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Điều chỉnh giá trị này tùy thuộc vào độ rộng mong muốn */
 }
+
 
 
 .comic-item h3:hover {
     color: red;
 }
-
 .latest-chapters {
-    text-align: center;
-    padding: 0 10px;
+    text-align: left;
+    display: flex; /* Hiển thị phần tử con trên cùng một dòng */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 5px; /* Khoảng cách giữa "Mới nhất:" và chương */
 }
 
 .latest-chapters h4 {
-    font-size: 14px;
-    margin-bottom: 5px;
+    font-size: 16px;
+    margin: 0; /* Loại bỏ margin để căn hàng */
+    white-space: nowrap; /* Không xuống dòng */
 }
 
 .latest-chapters a {
-    display: block;
     font-size: 14px;
     color: black;
     text-decoration: none;
-    margin-bottom: 5px;
+    white-space: nowrap; /* Không xuống dòng */
 }
-.latest-chapters a:hover {
-    display: block;
-    margin-bottom: 5px;
 
+.latest-chapters a:hover {
     color: #f44336;
     text-decoration: none;
-
 }
+
 
 .pagination-controls {
     display: flex;
