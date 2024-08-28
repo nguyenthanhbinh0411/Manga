@@ -229,7 +229,7 @@
                     <div class="comic-item" data-comic-slug="${comic.slug}">
                         <a href="TruyenDetails.html?slug=${comic.slug}">
                             <img src="https://img.otruyenapi.com/uploads/comics/${comic.slug}-thumb.jpg" alt="${comic.name}">
-                            <h3 title="${comic.name}">${comic.name}</h3>
+                            <h3 class="comic-title" title="${comic.name}">${comic.name}</h3>
                         </a>
                         <div class="latest-chapters">
                             ${chapterHtml}
@@ -239,7 +239,7 @@
 
                 comicList.appendChild(comicItem);
 
-                const comicElement = comicItem.querySelector('.comic-item');
+                const comicElement = comicItem.querySelector('.comic-title');
                 comicElement.addEventListener('mouseenter', (e) => showComicTooltip(e, comic));
                 comicElement.addEventListener('mouseleave', hideComicTooltip);
             }
@@ -282,7 +282,7 @@
             const rect = event.target.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
 
-            const left = rect.left + window.scrollX + rect.width + 10; // Thêm khoảng cách giữa tooltip và đối tượng
+            const left = rect.left + window.scrollX + rect.width + 20; // Thêm khoảng cách giữa tooltip và đối tượng
             const top = rect.top + window.scrollY; // Cập nhật vị trí theo cuộn trang
 
             tooltip.style.left = `${left}px`;
