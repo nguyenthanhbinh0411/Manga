@@ -83,15 +83,7 @@ body {
 .search-container input {
     margin-right: 10px;
 }
-.container {
-    background-color: #fff; /* Màu nền cho container */
-    padding: 40px; /* Khoảng cách bên trong */
-    border-radius: 10px; /* Bo tròn góc */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng để nổi lên */
-    position: relative;
-    z-index: 1; /* Đảm bảo container nổi trên các phần tử khác */
-    margin-bottom: 30px; /* Khoảng cách phía dưới */
-}
+
 /* Comic List */
 .comic-item {
     background: none;
@@ -106,6 +98,18 @@ body {
 
 .comic-item img {
     width: 100%;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    width: 100%; /* Đảm bảo hình ảnh bao phủ hết phần tử */
+}
+
+.comic-item:hover img {
+    transform: scale(1.05); /* Phóng to hình ảnh */
+    opacity: 0.9; /* Làm mờ một chút */
+}
+
+
+.comic-item img {
+    width: auto;
     height: 240px;
     border: none;
     border-bottom: 1px solid #ddd;
