@@ -14,15 +14,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap">
     <style>
+    
         .container {
             background-color: #fff; /* Màu nền cho container */
             padding: 40px; /* Khoảng cách bên trong */
+            padding-left: 50px;
             border-radius: 10px; /* Bo tròn góc */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng để nổi lên */
             position: relative;
             z-index: 1; /* Đảm bảo container nổi trên các phần tử khác */
             margin-bottom: 30px; /* Khoảng cách phía dưới */
         }
+        
     </style>
 </head>
 
@@ -98,6 +101,7 @@
     <div class="container mt-5">
         <div id="error-message" class="text-danger text-center "></div>
         <div class="row">
+
             <div class="col-md-8">
                 <div class="row comic-list mt-5" id="comic-list"></div>
             </div>
@@ -112,6 +116,41 @@
             </div>
         </div>
     </div>
+<!-- Footer -->
+<footer class="footer bg-dark text-white py-4 mt-5">
+    <div class="container-footer ">
+        <div class="row">
+            <div class="col-lg-1 col-md-6 mb-4">
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="mb-3">Về chúng tôi</h5>
+                <p>Trang web Manga3K cung cấp thông tin về các bộ truyện tranh nổi tiếng. Được thực hiện bởi nhóm 1 lớp CNTT 16-01, Trường Đại học Đại Nam.</p>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="mb-3">Liên hệ</h5>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-person-circle"></i> Nguyễn Hữu Huy & Nguyễn Thanh Bình</li>
+                    <li><i class="bi bi-geo-alt-fill"></i> Địa chỉ: 1 P. Xóm, Phú Lâm, Hà Đông, Hà Nội</li>
+                    <li><i class="bi bi-telephone-fill"></i> Số điện thoại: 08 3970 5780</li>
+                    <li><i class="bi bi-envelope-fill"></i> Email: mariodimoto222@gmail.com</li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="mb-3">Theo dõi chúng tôi</h5>
+                <div class="d-flex ">
+                    <a href="#" class="text-white mr-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white mr-3"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="text-white mr-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <p class="mb-0">&copy; 2024 Manga3K. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="index.js"></script>
@@ -124,13 +163,15 @@
         const genreDropdown = document.getElementById('genreDropdown');
         const genreButtons = document.getElementById('genre-buttons');
         const errorMessage = document.getElementById('error-message');
-
+        const preloader = document.getElementById('preloder');
+    
         let currentPage = 1;
         let searchKeyword = '';
         let selectedType = '';
         let selectedGenre = '';
-
+    
         async function fetchComics(page, keyword = '', type = '', genre = '') {
+            showLoader();
             try {
                 let url = '';
                 if (keyword) {
@@ -146,18 +187,18 @@
                 const response = await fetch(url);
                 const result = await response.json();
                 const data = result.data;
-
+    
                 if (data && data.items && Array.isArray(data.items)) {
-                    renderComics(data.items);
+                    await renderComics(data.items);
                     const paginationData = data.params && data.params.pagination ? data.params.pagination : {};
                     setupPagination(paginationData);
-
+    
                     if (genreButtons.children.length === 0) {
                         const genresUrl = 'https://otruyenapi.com/v1/api/the-loai';
                         const genresResponse = await fetch(genresUrl);
                         const genresResult = await genresResponse.json();
                         const genresData = genresResult.data;
-
+    
                         console.log('Genres data:', genresData);
                         if (genresData && genresData.items && Array.isArray(genresData.items)) {
                             populateMegaMenu(genresData.items);
@@ -172,9 +213,11 @@
             } catch (error) {
                 console.error("Đã xảy ra lỗi khi fetch dữ liệu:", error);
                 errorMessage.textContent = 'Không thể tải dữ liệu truyện.';
+            } finally {
+                hideLoader();
             }
         }
-
+    
         async function fetchLatestChapters(slug) {
             try {
                 const response = await fetch(`https://otruyenapi.com/v1/api/truyen-tranh/${slug}`);
@@ -184,7 +227,6 @@
                 const data = await response.json();
                 if (data?.data?.item?.chapters?.[0]?.server_data) {
                     const allChapters = data.data.item.chapters[0].server_data;
-                    // Lấy chương mới nhất (phần tử cuối cùng của mảng)
                     return allChapters.slice(-1);  // Lấy chương mới nhất
                 }
                 return [];
@@ -193,7 +235,7 @@
                 return [];
             }
         }
-
+    
         function formatDate(dateString) {
             const options = {
                 year: 'numeric',
@@ -203,22 +245,21 @@
             const date = new Date(dateString);
             return date.toLocaleDateString('vi-VN', options);
         }
-
+    
         async function renderComics(comics) {
             const comicList = document.getElementById('comic-list');
             if (!comicList) {
                 console.error('comic-list element không tồn tại.');
                 return;
             }
-
+    
             comicList.innerHTML = '';
-
-            for (const comic of comics) {
+    
+            const comicPromises = comics.map(async (comic) => {
                 const comicItem = document.createElement('div');
                 let chapterHtml = '';
                 try {
                     const latestChapters = await fetchLatestChapters(comic.slug);
-
                     if (Array.isArray(latestChapters) && latestChapters.length > 0) {
                         const latestChapter = latestChapters[0];
                         chapterHtml = `
@@ -231,7 +272,7 @@
                 } catch (error) {
                     console.error(`Lỗi khi fetch latest chapters cho ${comic.slug}:`, error);
                 }
-
+    
                 comicItem.innerHTML = `
                     <div class="comic-item" data-comic-slug="${comic.slug}">
                         <a href="TruyenDetails.html?slug=${comic.slug}">
@@ -243,24 +284,25 @@
                         </div>
                     </div>
                 `;
-
+    
                 comicList.appendChild(comicItem);
-
+    
                 const comicElement = comicItem.querySelector('.comic-title');
                 comicElement.addEventListener('mouseenter', (e) => showComicTooltip(e, comic));
                 comicElement.addEventListener('mouseleave', hideComicTooltip);
-            }
+            });
+    
+            await Promise.all(comicPromises);
         }
-
+    
         async function showComicTooltip(event, comic) {
-            // Xóa tooltip cũ nếu có
             hideComicTooltip();
-
+    
             const tooltip = document.createElement('div');
             tooltip.className = 'comic-tooltip';
-
+    
             const comicDetails = await fetchComicDetails(comic.slug);
-
+    
             if (!comicDetails) {
                 tooltip.innerHTML = '<p>Lỗi tải thông tin truyện.</p>';
             } else {
@@ -268,42 +310,41 @@
                 const authors = comicDetails.author && comicDetails.author.length ? comicDetails.author.join(', ') : 'Không rõ';
                 const categories = comicDetails.category && comicDetails.category.length ? comicDetails.category.map(cat => cat.name).join(', ') : 'Không có thông tin';
                 const description = comicDetails.content ? comicDetails.content.substring(0, 100) : 'Không có mô tả';
-
+    
                 tooltip.innerHTML = `
-        <div style="display: flex; align-items: flex-start;">
-        <img src="${thumbUrl}" alt="${comic.name}" style="width: 100px; height: auto; margin-right: 10px;">
-        <div>
-            <p><strong>${comic.name}</strong></p>
-            <p><strong>Trạng thái:</strong> ${getStatusInVietnamese(comicDetails.status)}</p>
-            <p><strong>Tác giả:</strong> ${authors}</p>
-            <p><strong>Thể loại:</strong> ${categories}</p>
-            <p><strong>Cập nhật lần cuối:</strong> ${formatDate(comicDetails.updatedAt)}</p>
-            <p><strong></strong> ${description}...</p>
-        </div>
-    </div>
+                    <div style="display: flex; align-items: flex-start;">
+                        <img src="${thumbUrl}" alt="${comic.name}" style="width: 100px; height: auto; margin-right: 10px;">
+                        <div>
+                            <p><strong>${comic.name}</strong></p>
+                            <p><strong>Trạng thái:</strong> ${getStatusInVietnamese(comicDetails.status)}</p>
+                            <p><strong>Tác giả:</strong> ${authors}</p>
+                            <p><strong>Thể loại:</strong> ${categories}</p>
+                            <p><strong>Cập nhật lần cuối:</strong> ${formatDate(comicDetails.updatedAt)}</p>
+                            <p><strong></strong> ${description}...</p>
+                        </div>
+                    </div>
                 `;
             }
-
+    
             document.body.appendChild(tooltip);
-            // Tính toán vị trí của tooltip
             const rect = event.target.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
-
-            const left = rect.left + window.scrollX + rect.width + 20; // Thêm khoảng cách giữa tooltip và đối tượng
-            const top = rect.top + window.scrollY; // Cập nhật vị trí theo cuộn trang
-
+    
+            const left = rect.left + window.scrollX + rect.width + 20;
+            const top = rect.top + window.scrollY;
+    
             tooltip.style.left = `${left}px`;
             tooltip.style.top = `${top}px`;
             tooltip.style.display = 'block';
         }
-
+    
         function hideComicTooltip() {
             const tooltip = document.querySelector('.comic-tooltip');
             if (tooltip) {
                 tooltip.remove();
             }
         }
-
+    
         function getStatusInVietnamese(status) {
             switch (status) {
                 case 'ongoing':
@@ -311,10 +352,10 @@
                 case 'completed':
                     return 'Hoàn thành';
                 default:
-                    return 'Không rõ'; // Trả về trạng thái mặc định
+                    return 'Không rõ';
             }
         }
-
+    
         async function fetchComicDetails(slug) {
             try {
                 const response = await fetch(`https://otruyenapi.com/v1/api/truyen-tranh/${slug}`);
@@ -328,7 +369,7 @@
                 return null;
             }
         }
-
+    
         function setupPagination(paginationData) {
             pagination.innerHTML = '';
             const currentPage = paginationData.currentPage || 1;
@@ -399,7 +440,7 @@
                 pagination.appendChild(paginationControls);
             }
         }
-
+    
         function populateMegaMenu(genres) {
             genreButtons.innerHTML = '';
             const numColumns = 4;
@@ -427,10 +468,18 @@
                 genreButtons.appendChild(column);
             }
         }
-
+    
+        function showLoader() {
+            preloader.style.display = 'flex';
+        }
+    
+        function hideLoader() {
+            preloader.style.display = 'none';
+        }
+    
         document.addEventListener('DOMContentLoaded', () => {
             fetchComics(currentPage);
-
+    
             searchBtn.addEventListener('click', () => {
                 searchKeyword = searchInput.value.trim();
                 selectedType = '';
@@ -438,7 +487,7 @@
                 currentPage = 1;
                 fetchComics(currentPage, searchKeyword);
             });
-
+    
             typeSelect.addEventListener('change', () => {
                 selectedType = typeSelect.value;
                 searchKeyword = '';
@@ -446,16 +495,15 @@
                 currentPage = 1;
                 fetchComics(currentPage, searchKeyword, selectedType, selectedGenre);
             });
-
+    
             genreDropdown.addEventListener('mouseenter', () => {
                 document.querySelector('.mega-menu').classList.add('show');
             });
-
+    
             document.querySelector('.dropdown').addEventListener('mouseleave', () => {
                 document.querySelector('.mega-menu').classList.remove('show');
             });
-
-
+    
             document.querySelectorAll('.filter-container a').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -466,7 +514,7 @@
                     fetchComics(currentPage, '', selectedType);
                 });
             });
-
+    
             const genreSelect = document.getElementById('genre-select');
             if (genreSelect) {
                 genreSelect.addEventListener('change', () => {
@@ -478,8 +526,8 @@
                 });
             }
         });
-
     </script>
+    
 </body>
 
 </html>

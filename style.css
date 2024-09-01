@@ -99,17 +99,6 @@ body {
 .comic-item img {
     width: 100%;
     transition: transform 0.3s ease, opacity 0.3s ease;
-    width: 100%; /* Đảm bảo hình ảnh bao phủ hết phần tử */
-}
-
-.comic-item:hover img {
-    transform: scale(1.05); /* Phóng to hình ảnh */
-    opacity: 0.9; /* Làm mờ một chút */
-}
-
-
-.comic-item img {
-    width: auto;
     height: 240px;
     border: none;
     border-bottom: 1px solid #ddd;
@@ -127,8 +116,6 @@ body {
     text-overflow: ellipsis;
     max-width: 150px; /* Điều chỉnh giá trị này tùy thuộc vào độ rộng mong muốn */
 }
-
-
 
 .comic-item h3:hover {
     color: red;
@@ -416,4 +403,94 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     transition: opacity 0.2s ease-in-out;
     /* Thêm hiệu ứng chuyển đổi khi tooltip hiện hoặc ẩn */
+}
+/* Footer Styles */
+.footer {
+    background-color: #343a40;
+    color: #f8f9fa;
+    padding: 40px 0;
+    border-top: 5px solid #ff4757; /* Đường viền nổi bật */
+}
+
+.footer h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.footer p, .footer ul, .footer li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.footer .container-footer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footer .col-lg-3, .footer .col-md-6 {
+    margin-bottom: 20px;
+}
+
+.footer .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+.footer .list-unstyled li {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    color: #f8f9fa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: red;
+}
+
+.footer i {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.footer .d-flex a {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    transition: transform 0.3s, color 0.3s ease;
+}
+
+.footer .d-flex a:hover {
+    color: red;
+    transform: scale(1.2); /* Tạo hiệu ứng phóng to nhẹ */
+}
+
+.footer .text-center {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .footer .container-footer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer .col-lg-3, .footer .col-md-6 {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer .d-flex {
+        justify-content: center;
+    }
+
+    .footer .text-center {
+        font-size: 0.8rem;
+    }
 }
