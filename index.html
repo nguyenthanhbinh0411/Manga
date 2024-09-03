@@ -13,19 +13,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
     <style>
-    
         .container {
-            background-color: #fff; /* Màu nền cho container */
-            padding: 40px; /* Khoảng cách bên trong */
+            background-color: #fff;
+            /* Màu nền cho container */
+            padding: 40px;
+            /* Khoảng cách bên trong */
             padding-left: 50px;
-            border-radius: 10px; /* Bo tròn góc */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng để nổi lên */
+            border-radius: 10px;
+            /* Bo tròn góc */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* Đổ bóng để nổi lên */
             position: relative;
-            z-index: 1; /* Đảm bảo container nổi trên các phần tử khác */
-            margin-bottom: 30px; /* Khoảng cách phía dưới */
+            z-index: 1;
+            /* Đảm bảo container nổi trên các phần tử khác */
+            margin-bottom: 30px;
+            /* Khoảng cách phía dưới */
         }
-        
     </style>
 </head>
 
@@ -95,18 +102,28 @@
             </div>
         </div>
     </header>
-    <div> 
+    <div>
         <p style="margin-top: 50px;">q</p>
     </div>
     <div class="container mt-5">
         <div id="error-message" class="text-danger text-center "></div>
-        <div class="row">
+            <h1><i class="bi bi-star"></i> Truyện đã hoàn thành</h1>
+            <div class="slider-container">
+                <div class="slider" id="slider">
+                    <!-- Items sẽ được thêm vào đây -->
+                </div>
+                <div class="nav-buttons">
+                    <button id="prevBtn">&larr;</button>
+                    <button id="nextBtn">&rarr;</button>
+                </div>
+            </div>
+            <h1><i class="bi bi-list"></i> Tất cả truyện</h1>
 
+        <div class="row">
             <div class="col-md-8">
                 <div class="row comic-list mt-5" id="comic-list"></div>
             </div>
-            <div class="col-md-2"></div>
-
+            <div class="col-md-4"></div>
         </div>
 
         <div class="row">
@@ -116,40 +133,14 @@
             </div>
         </div>
     </div>
-<!-- Footer -->
-<footer class="footer bg-dark text-white py-4 mt-5">
-    <div class="container-footer ">
-        <div class="row">
-            <div class="col-lg-1 col-md-6 mb-4">
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="mb-3">Về chúng tôi</h5>
-                <p>Trang web Manga3K cung cấp thông tin về các bộ truyện tranh nổi tiếng. Được thực hiện bởi nhóm 1 lớp CNTT 16-01, Trường Đại học Đại Nam.</p>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="mb-3">Liên hệ</h5>
-                <ul class="list-unstyled">
-                    <li><i class="bi bi-person-circle"></i> Nguyễn Hữu Huy & Nguyễn Thanh Bình</li>
-                    <li><i class="bi bi-geo-alt-fill"></i> Địa chỉ: 1 P. Xóm, Phú Lâm, Hà Đông, Hà Nội</li>
-                    <li><i class="bi bi-telephone-fill"></i> Số điện thoại: 08 3970 5780</li>
-                    <li><i class="bi bi-envelope-fill"></i> Email: mariodimoto222@gmail.com</li>
-                </ul>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h5 class="mb-3">Theo dõi chúng tôi</h5>
-                <div class="d-flex ">
-                    <a href="#" class="text-white mr-3"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white mr-3"><i class="bi bi-youtube"></i></a>
-                    <a href="#" class="text-white mr-3"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white"><i class="bi bi-tiktok"></i></a>
-                </div>
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4 mt-5">
+        <div class="container-footer ">
+            <div class="text-center mt-3">
+                <p class="mb-0">&copy; 2024 Manga3K. All Rights Reserved.</p>
             </div>
         </div>
-        <div class="text-center mt-3">
-            <p class="mb-0">&copy; 2024 Manga3K. All Rights Reserved.</p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -164,12 +155,67 @@
         const genreButtons = document.getElementById('genre-buttons');
         const errorMessage = document.getElementById('error-message');
         const preloader = document.getElementById('preloder');
-    
+
         let currentPage = 1;
         let searchKeyword = '';
         let selectedType = '';
         let selectedGenre = '';
-    
+        const slider = document.getElementById('slider');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let offset = 0;
+        const slideWidth = 100 / 6; // Mỗi lần cuộn 1/6 của thanh slider
+
+        async function fetchSliderComics() {
+            try {
+                const response = await fetch('https://otruyenapi.com/v1/api/danh-sach/hoan-thanh');
+                const result = await response.json();
+                const comics = result.data.items;
+
+                slider.innerHTML = '';
+                comics.forEach(comic => {
+                    const comicItem = document.createElement('div');
+                    comicItem.classList.add('slider-item');
+                    comicItem.innerHTML = `
+                        <a href="TruyenDetails.html?slug=${comic.slug}">
+                            <img src="https://img.otruyenapi.com/uploads/comics/${comic.slug}-thumb.jpg" alt="${comic.name}">
+                            <h3>${comic.name}</h3>
+                        </a>
+                    `;
+                    slider.appendChild(comicItem);
+                });
+            } catch (error) {
+                console.error('Lỗi khi tải dữ liệu slider:', error);
+            }
+        }
+
+        function slideNext() {
+            const maxOffset = -(slider.children.length - 6) * slideWidth;
+            if (offset > maxOffset) {
+                offset -= slideWidth;
+                slider.style.transform = `translateX(${offset}%)`;
+            }
+        }
+
+        function slidePrev() {
+            if (offset < 0) {
+                offset += slideWidth;
+                slider.style.transform = `translateX(${offset}%)`;
+            }
+        }
+
+        nextBtn.addEventListener('click', slideNext);
+        prevBtn.addEventListener('click', slidePrev);
+
+        fetchSliderComics(); // Gọi khi trang được tải
+        function showLoader() {
+            preloader.style.display = 'flex';
+        }
+
+        function hideLoader() {
+            preloader.style.display = 'none';
+        }
+
         async function fetchComics(page, keyword = '', type = '', genre = '') {
             showLoader();
             try {
@@ -187,18 +233,18 @@
                 const response = await fetch(url);
                 const result = await response.json();
                 const data = result.data;
-    
+
                 if (data && data.items && Array.isArray(data.items)) {
                     await renderComics(data.items);
                     const paginationData = data.params && data.params.pagination ? data.params.pagination : {};
                     setupPagination(paginationData);
-    
+
                     if (genreButtons.children.length === 0) {
                         const genresUrl = 'https://otruyenapi.com/v1/api/the-loai';
                         const genresResponse = await fetch(genresUrl);
                         const genresResult = await genresResponse.json();
                         const genresData = genresResult.data;
-    
+
                         console.log('Genres data:', genresData);
                         if (genresData && genresData.items && Array.isArray(genresData.items)) {
                             populateMegaMenu(genresData.items);
@@ -217,7 +263,7 @@
                 hideLoader();
             }
         }
-    
+
         async function fetchLatestChapters(slug) {
             try {
                 const response = await fetch(`https://otruyenapi.com/v1/api/truyen-tranh/${slug}`);
@@ -235,7 +281,7 @@
                 return [];
             }
         }
-    
+
         function formatDate(dateString) {
             const options = {
                 year: 'numeric',
@@ -245,16 +291,16 @@
             const date = new Date(dateString);
             return date.toLocaleDateString('vi-VN', options);
         }
-    
+
         async function renderComics(comics) {
             const comicList = document.getElementById('comic-list');
             if (!comicList) {
                 console.error('comic-list element không tồn tại.');
                 return;
             }
-    
+
             comicList.innerHTML = '';
-    
+
             const comicPromises = comics.map(async (comic) => {
                 const comicItem = document.createElement('div');
                 let chapterHtml = '';
@@ -272,7 +318,7 @@
                 } catch (error) {
                     console.error(`Lỗi khi fetch latest chapters cho ${comic.slug}:`, error);
                 }
-    
+
                 comicItem.innerHTML = `
                     <div class="comic-item" data-comic-slug="${comic.slug}">
                         <a href="TruyenDetails.html?slug=${comic.slug}">
@@ -284,25 +330,25 @@
                         </div>
                     </div>
                 `;
-    
+
                 comicList.appendChild(comicItem);
-    
+
                 const comicElement = comicItem.querySelector('.comic-title');
                 comicElement.addEventListener('mouseenter', (e) => showComicTooltip(e, comic));
                 comicElement.addEventListener('mouseleave', hideComicTooltip);
             });
-    
+
             await Promise.all(comicPromises);
         }
-    
+
         async function showComicTooltip(event, comic) {
             hideComicTooltip();
-    
+
             const tooltip = document.createElement('div');
             tooltip.className = 'comic-tooltip';
-    
+
             const comicDetails = await fetchComicDetails(comic.slug);
-    
+
             if (!comicDetails) {
                 tooltip.innerHTML = '<p>Lỗi tải thông tin truyện.</p>';
             } else {
@@ -310,7 +356,7 @@
                 const authors = comicDetails.author && comicDetails.author.length ? comicDetails.author.join(', ') : 'Không rõ';
                 const categories = comicDetails.category && comicDetails.category.length ? comicDetails.category.map(cat => cat.name).join(', ') : 'Không có thông tin';
                 const description = comicDetails.content ? comicDetails.content.substring(0, 100) : 'Không có mô tả';
-    
+
                 tooltip.innerHTML = `
                     <div style="display: flex; align-items: flex-start;">
                         <img src="${thumbUrl}" alt="${comic.name}" style="width: 100px; height: auto; margin-right: 10px;">
@@ -325,26 +371,26 @@
                     </div>
                 `;
             }
-    
+
             document.body.appendChild(tooltip);
             const rect = event.target.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
-    
+
             const left = rect.left + window.scrollX + rect.width + 20;
             const top = rect.top + window.scrollY;
-    
+
             tooltip.style.left = `${left}px`;
             tooltip.style.top = `${top}px`;
             tooltip.style.display = 'block';
         }
-    
+
         function hideComicTooltip() {
             const tooltip = document.querySelector('.comic-tooltip');
             if (tooltip) {
                 tooltip.remove();
             }
         }
-    
+
         function getStatusInVietnamese(status) {
             switch (status) {
                 case 'ongoing':
@@ -355,7 +401,7 @@
                     return 'Không rõ';
             }
         }
-    
+
         async function fetchComicDetails(slug) {
             try {
                 const response = await fetch(`https://otruyenapi.com/v1/api/truyen-tranh/${slug}`);
@@ -369,7 +415,7 @@
                 return null;
             }
         }
-    
+
         function setupPagination(paginationData) {
             pagination.innerHTML = '';
             const currentPage = paginationData.currentPage || 1;
@@ -440,7 +486,7 @@
                 pagination.appendChild(paginationControls);
             }
         }
-    
+
         function populateMegaMenu(genres) {
             genreButtons.innerHTML = '';
             const numColumns = 4;
@@ -468,18 +514,11 @@
                 genreButtons.appendChild(column);
             }
         }
-    
-        function showLoader() {
-            preloader.style.display = 'flex';
-        }
-    
-        function hideLoader() {
-            preloader.style.display = 'none';
-        }
-    
+
+
         document.addEventListener('DOMContentLoaded', () => {
             fetchComics(currentPage);
-    
+
             searchBtn.addEventListener('click', () => {
                 searchKeyword = searchInput.value.trim();
                 selectedType = '';
@@ -487,7 +526,7 @@
                 currentPage = 1;
                 fetchComics(currentPage, searchKeyword);
             });
-    
+
             typeSelect.addEventListener('change', () => {
                 selectedType = typeSelect.value;
                 searchKeyword = '';
@@ -495,15 +534,15 @@
                 currentPage = 1;
                 fetchComics(currentPage, searchKeyword, selectedType, selectedGenre);
             });
-    
+
             genreDropdown.addEventListener('mouseenter', () => {
                 document.querySelector('.mega-menu').classList.add('show');
             });
-    
+
             document.querySelector('.dropdown').addEventListener('mouseleave', () => {
                 document.querySelector('.mega-menu').classList.remove('show');
             });
-    
+
             document.querySelectorAll('.filter-container a').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -514,7 +553,7 @@
                     fetchComics(currentPage, '', selectedType);
                 });
             });
-    
+
             const genreSelect = document.getElementById('genre-select');
             if (genreSelect) {
                 genreSelect.addEventListener('change', () => {
@@ -527,7 +566,7 @@
             }
         });
     </script>
-    
+
 </body>
 
 </html>
