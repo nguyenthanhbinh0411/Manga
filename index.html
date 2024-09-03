@@ -390,6 +390,7 @@
                 errorMessage.textContent = 'Không thể tải dữ liệu truyện.';
             } finally {
                 hideLoader();
+                window.scrollTo(0, 0); // Cuộn về đầu trang sau khi tải dữ liệu xong
             }
         }
 
@@ -851,7 +852,7 @@
                         <a href="TruyenDetails.html?slug=${encodeURIComponent(item.slug)}">
                             ${item.name}
                         </a>
-                        <button class="delete-button" data-slug="${item.slug}">Xóa</button>
+                        <button class="delete-button" data-slug="${item.slug}">X</button>
                     `;
 
                     historyContainer.appendChild(historyItem);
