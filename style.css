@@ -201,9 +201,8 @@ body {
     padding: 10px;
     cursor: pointer;
     pointer-events: all;
-    border-radius: 50%;
     outline: none;
-    width: 50px;
+    width: 30px;
     height: 50px;
     display: flex;
     align-items: center;
@@ -228,20 +227,6 @@ body {
     transform: scale(0.9);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
-
-
-@media (max-width: 768px) {
-    .slider-item {
-        flex: 0 0 50%;
-    }
-}
-
-@media (max-width: 480px) {
-    .slider-item {
-        flex: 0 0 100%;
-    }
-}
-
 
 /* Comic List */
 .comic-item {

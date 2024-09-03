@@ -35,7 +35,6 @@
             box-sizing: border-box;
             padding: 15px;
             transition: transform 0.3s ease;
-            position: relative; /* Đảm bảo lớp phủ được định vị đúng */
         }
         .slider-item img {
             width: 100%;
@@ -44,31 +43,21 @@
             border-radius: 8px;
             transition: transform 0.3s ease;
         }
-
-        /* Lớp phủ chứa tên truyện */
-        .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
+        .slider-item h3 {
             text-align: center;
-            padding: 10px 0;
-            border-radius: 0 0 8px 8px;
             font-size: 14px;
-            transition: background 0.3s ease;
+            margin: 10px 0 0;
+            color: #555;
+            text-decoration: none;
         }
-
         .slider-item a {
             text-decoration: none; /* Xóa gạch chân khỏi chữ */
-            display: block; /* Đảm bảo ảnh và lớp phủ là một khối */
         }
         .slider-item:hover img {
             transform: scale(1.05);
         }
-        .slider-item:hover .overlay {
-            background: rgba(0, 0, 0, 0.7);
+        .slider-item:hover h3 {
+            color: #007bff;
         }
         .nav-buttons {
             position: absolute;
@@ -80,7 +69,7 @@
             pointer-events: none;
         }
         .nav-buttons button {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
             padding: 10px;
@@ -88,32 +77,19 @@
             pointer-events: all;
             border-radius: 50%;
             outline: none;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 20px;
         }
-        
-        .nav-buttons button:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-        }
-        
         .nav-buttons button:focus {
             outline: none;
         }
-        
         .nav-buttons button:active {
-            transform: scale(0.9);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transform: scale(0.95);
         }
-        
         .search-container,
         .filter-container {
             max-width: 1200px;
@@ -165,20 +141,19 @@
         }
     </style>
 </head>
-<body> 
+<body>
     <h1>Danh Sách Truyện</h1>
-    <div class="container">
-        <!-- Thanh slider -->
-        <div class="slider-container">
-            <div class="slider" id="slider">
-                <!-- Items sẽ được thêm vào đây -->
-            </div>
-            <div class="nav-buttons">
-                <button id="prevBtn">&larr;</button>
-                <button id="nextBtn">&rarr;</button>
-            </div>
+<div class="container">
+    <!-- Thanh slider -->
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <!-- Items sẽ được thêm vào đây -->
         </div>
-    </div>
+        <div class="nav-buttons">
+            <button id="prevBtn">&larr;</button>
+            <button id="nextBtn">&rarr;</button>
+        </div>
+    </div></div>
     <script>
         const slider = document.getElementById('slider');
         const prevBtn = document.getElementById('prevBtn');
@@ -200,7 +175,7 @@
                     comicItem.innerHTML = `
                         <a href="TruyenDetails.html?slug=${comic.slug}">
                             <img src="https://img.otruyenapi.com/uploads/comics/${comic.slug}-thumb.jpg" alt="${comic.name}">
-                            <div class="overlay">${comic.name}</div>
+                            <h3>${comic.name}</h3>
                         </a>
                     `;
                     slider.appendChild(comicItem);
@@ -218,9 +193,6 @@
             if (offset > maxOffset) {
                 offset -= slideWidth;
                 slider.style.transform = `translateX(${offset}%)`;
-            } else {
-                offset = 0;
-                slider.style.transform = `translateX(${offset}%)`;
             }
         }
 
@@ -234,6 +206,10 @@
         function startAutoSlide() {
             interval = setInterval(() => {
                 slideNext();
+                if (offset <= -(slider.children.length - getItemsToShow()) * slideWidth) {
+                    offset = 0;
+                    slider.style.transform = `translateX(${offset}%)`;
+                }
             }, 3000); // Thay đổi mỗi 3 giây
         }
 
@@ -243,7 +219,7 @@
 
         function updateSlideWidth() {
             if (window.innerWidth <= 480) {
-                slideWidth = 100 / 2; // 2 items trên màn hình nhỏ
+                slideWidth = 100 / 2; // 18 items trên màn hình nhỏ
             } else if (window.innerWidth <= 768) {
                 slideWidth = 100 / 3;  // 3 items trên tablet
             } else {
@@ -266,20 +242,18 @@
             slideNext();
             startAutoSlide();
         });
-
         prevBtn.addEventListener('click', () => {
             stopAutoSlide();
             slidePrev();
             startAutoSlide();
         });
 
-        fetchSliderComics();
+        fetchSliderComics(); // Gọi khi trang được tải
 
+        // Cập nhật slideWidth khi thay đổi kích thước cửa sổ
         window.addEventListener('resize', () => {
             updateSlideWidth();
-            slider.style.width = `${100 / slideWidth}%`;
-            offset = 0; 
-            slider.style.transform = `translateX(${offset}%)`;
+            slider.style.transform = `translateX(${offset}%)`; // Đảm bảo transform được cập nhật
         });
     </script>
 </body>
