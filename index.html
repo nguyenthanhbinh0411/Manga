@@ -91,7 +91,15 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        } body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
         }
+       
+
+        
     </style>
 
 
@@ -168,7 +176,7 @@
     </div>
     <div class="container mt-5">
         <div id="error-message" class="text-danger text-center "></div>
-        <h1><i class="bi bi-star"></i> Truyện đã hoàn thành</h1>
+        <h3><i class="bi bi-star"></i> Truyện đã hoàn thành</h3>
         <div class="slider-container">
             <div class="slider" id="slider">
                 <!-- Items sẽ được thêm vào đây -->
@@ -233,11 +241,12 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         let offset = 0;
-        const slideWidth = 100 / 6; // Mỗi lần cuộn 1/6 của thanh slider
-
+        let slideWidth = 100 / 6; // Mặc định 6 items trên màn hình lớn
+        let interval;
+        
         async function fetchSliderComics() {
             try {
-                const response = await fetch('https://otruyenapi.com/v1/api/danh-sach/hoan-thanh');
+                const response = await fetch('https://otruyenapi.com/v1/api/danh-sach/sap-ra-mat');
                 const result = await response.json();
                 const comics = result.data.items;
 
@@ -253,15 +262,21 @@
                     `;
                     slider.appendChild(comicItem);
                 });
+
+                updateSlideWidth();
+                startAutoSlide();
             } catch (error) {
                 console.error('Lỗi khi tải dữ liệu slider:', error);
             }
         }
 
         function slideNext() {
-            const maxOffset = -(slider.children.length - 6) * slideWidth;
+            const maxOffset = -(slider.children.length - getItemsToShow()) * slideWidth;
             if (offset > maxOffset) {
                 offset -= slideWidth;
+                slider.style.transform = `translateX(${offset}%)`;
+            } else {
+                offset = 0;
                 slider.style.transform = `translateX(${offset}%)`;
             }
         }
@@ -273,10 +288,55 @@
             }
         }
 
-        nextBtn.addEventListener('click', slideNext);
-        prevBtn.addEventListener('click', slidePrev);
+        function startAutoSlide() {
+            interval = setInterval(() => {
+                slideNext();
+            }, 3000); // Thay đổi mỗi 3 giây
+        }
+
+        function stopAutoSlide() {
+            clearInterval(interval);
+        }
+
+        function updateSlideWidth() {
+            if (window.innerWidth <= 480) {
+                slideWidth = 100 / 2; // 2 items trên màn hình nhỏ
+            } else if (window.innerWidth <= 768) {
+                slideWidth = 100 / 3;  // 3 items trên tablet
+            } else {
+                slideWidth = 100 / 6;  // 6 items trên màn hình lớn
+            }
+        }
+
+        function getItemsToShow() {
+            if (window.innerWidth <= 480) {
+                return 2;
+            } else if (window.innerWidth <= 768) {
+                return 3;
+            } else {
+                return 6;
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            slideNext();
+            startAutoSlide();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            slidePrev();
+            startAutoSlide();
+        });
 
         fetchSliderComics(); // Gọi khi trang được tải
+
+        // Cập nhật slideWidth khi thay đổi kích thước cửa sổ
+        window.addEventListener('resize', () => {
+            updateSlideWidth();
+            slider.style.transform = `translateX(${offset}%)`; // Đảm bảo transform được cập nhật
+        });
         function showLoader() {
             preloader.style.display = 'flex';
         }
