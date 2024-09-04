@@ -1,0 +1,220 @@
+.container {
+    background-color: #fff;
+    /* Màu nền cho container */
+    padding: 40px;
+    /* Khoảng cách bên trong */
+    padding-left: 50px;
+    border-radius: 10px;
+    /* Bo tròn góc */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Đổ bóng để nổi lên */
+    position: relative;
+    z-index: 1;
+    /* Đảm bảo container nổi trên các phần tử khác */
+    margin-bottom: 30px;
+}
+
+/* Khoảng cách phía dưới */
+#isekai-list {
+    width: 100%;
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.comic-thumbnail {
+    width: 100px;
+    height: 140px;
+    margin-right: 5px;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+.isekai-list {
+    margin-bottom: 15px;
+    /* Khoảng cách giữa các mục */
+}
+
+.isekai-list.comic-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.isekai-list.comic-thumbnail {
+    width: 100%;
+    /* Đảm bảo hình ảnh không vượt quá kích thước cột */
+    height: auto;
+    /* Để duy trì tỷ lệ khung hình của hình ảnh */
+    object-fit: cover;
+}
+
+.isekai-list.h3.comic-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+} 
+.slider2-container {
+    position: relative;
+    width: 100%;
+    height: 400px; /* Điều chỉnh chiều cao nếu cần */
+    overflow: hidden; /* Ẩn thanh cuộn ngang */
+}
+
+.slider2 {
+    display: flex;
+    overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    scroll-behavior: smooth;
+}
+
+.slider2-item {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    position: relative;
+    height: 100%;
+    flex-shrink: 0; /* Ngăn không cho các phần tử co lại */
+}
+.slider2-item h2{
+    font-size: 30px;
+}
+.slider2-item img {
+    width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của slider */
+    height: 100%; /* Ảnh chiếm toàn bộ chiều cao của slider */
+    object-fit: cover; /* Đảm bảo ảnh phủ toàn bộ khu vực và duy trì tỷ lệ khung hình */
+}
+
+/* Thông tin truyện */
+.comic-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%; /* Thông tin truyện chiếm một nửa chiều rộng của slider */
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Nền đen trong suốt */
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Căn giữa nội dung theo chiều dọc */
+}
+
+.comic-info h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.comic-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.comic-info h7 {
+    margin: 10px 0;
+    font-size: 14px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* Giới hạn mô tả ở 4 dòng */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis; /* Hiển thị dấu "..." nếu mô tả quá dài */
+}
+
+/* Dấu chấm điều hướng */
+.dots-container {
+    position: absolute;
+    bottom: 10px;
+    left: 70%; /* Đặt dấu chấm vào bên phải */
+    display: flex;
+    gap: 10px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #ff5722;
+}.button-container a {
+    display: inline-block;
+    padding: 12px 24px; /* Tăng kích thước padding để nút lớn hơn */
+    font-size: 18px; /* Tăng kích thước chữ để nổi bật hơn */
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff5722;
+    border-radius: 8px; /* Tăng độ cong góc cho nút */
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ cho nút */
+}
+
+.button-container a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.3); /* Thay đổi màu sắc và độ trong suốt */
+    transition: all 0.4s ease;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+.button-container a:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.button-container a:hover {
+    background-color: #e64a19;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Tăng độ đậm của bóng đổ khi hover */
+}
+
+.button-container a:active {
+    background-color: #d84315;
+    transform: scale(0.98); /* Tạo hiệu ứng nhấn nút */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Khôi phục bóng đổ khi nhấn */
+}
+
+@media (max-width: 768px) {
+    .slider2-container {
+        display:none;
+    }
+    
+}

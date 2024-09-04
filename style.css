@@ -181,10 +181,14 @@ body {
     .slider-item {
         flex: 0 0 33.3333%; /* Hiển thị 3 truyện mỗi lần trên màn hình nhỏ hơn */
     }
+    
 }
 @media (max-width: 480px) {
     .slider-item {
         flex: 0 0 50%; /* Hiển thị 2 truyện mỗi lần trên màn hình nhỏ hơn */
+    }
+    .slider-item h3{
+        max-width:120px;
     }
 }
 .nav-buttons {
