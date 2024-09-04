@@ -736,7 +736,7 @@ const comicList = document.getElementById('comic-list');
                             <h2><strong>${comic.name || comicData.data.item.name}</strong></h2>
                             <p><strong>Thể loại:</strong> ${categories}</p>
                             <p><strong>Cập nhật lần cuối:</strong> <span>${formatDate(comicData.data.seoOnPage.updated_time)}</span></p>
-                            <h7><strong>Mô tả:</strong> ${comic.slug === 'tao-muon-tro-thanh-chua-te-bong-toi' ? comic.content : comicItem.content || comicData.data.item.content}</h7>
+                            <h7><strong></strong> ${comic.slug === 'tao-muon-tro-thanh-chua-te-bong-toi' ? comic.content : comicItem.content || comicData.data.item.content}</h7>
                             <div class="button-container">
                                 ${lastChapter ? `<a href="MangaDetails.html?slug=${comic.slug}&chapter=${encodeURIComponent(lastChapter)}">Đọc ngay</a>` : ''}
                             </div>
