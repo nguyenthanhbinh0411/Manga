@@ -680,108 +680,114 @@ const comicList = document.getElementById('comic-list');
             // Xử lý thay thế hoặc thông báo cho người dùng
         }
         const comics = [
-        { slug: 'tao-muon-tro-thanh-chua-te-bong-toi', img: 'img/shadow.jpg' },
-        { slug: 'arya-ban-ben-thinh-thoang-lai-treu-gheo-toi-bang-tieng-nga', img: 'img/arya.jpg'},
-        { slug: 'otonari-no-tenshi-sama-ni-itsunomanika-dame-ningen-ni-sareteita-ken', img: 'img/mahiru.jpg', name: 'Thiên sứ nhà bên' },
-        { slug: 'kishuku-gakkou-no-juliet', img: 'img/juliet.png' },
-        { slug: 'that-nghiep-chuyen-sinh-lam-lai-het-suc', img: 'img/roxy.jpg' }
-    ];
-
-    function getStatusInVietnamese(status) {
-        switch (status) {
-            case 'ongoing':
-                return 'Đang tiến hành';
-            case 'completed':
-                return 'Đã hoàn thành';
-            default:
-                return 'Chưa xác định';
+            {
+                slug: 'tao-muon-tro-thanh-chua-te-bong-toi',
+                img: 'img/shadow.jpg',
+                content: 'Tao Muốn Trở Thành Chúa Tể Bóng Tối!! là một manga được chuyển thể từ Light Novel cùng tên. Câu chuyện xoay quanh một cậu trai tên là Shido, người luôn mơ ước trở thành chúa tể bóng tối. Shido không phải là nhân vật chính hay trùm cuối, mà là người điều khiển câu chuyện từ trong bóng tối, bí mật phô bày năng lực của mình.'
+            },
+            { slug: 'arya-ban-ben-thinh-thoang-lai-treu-gheo-toi-bang-tieng-nga', img: 'img/arya.jpg' },
+            { slug: 'otonari-no-tenshi-sama-ni-itsunomanika-dame-ningen-ni-sareteita-ken', img: 'img/mahiru.jpg', name: 'Thiên sứ nhà bên' },
+            { slug: 'kishuku-gakkou-no-juliet', img: 'img/juliet.png' },
+            { slug: 'that-nghiep-chuyen-sinh-lam-lai-het-suc', img: 'img/roxy.jpg' }
+        ];
+        
+        function getStatusInVietnamese(status) {
+            switch (status) {
+                case 'ongoing':
+                    return 'Đang tiến hành';
+                case 'completed':
+                    return 'Đã hoàn thành';
+                default:
+                    return 'Chưa xác định';
+            }
         }
-    }
-
-    function formatDate(timestamp) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(timestamp).toLocaleDateString('vi-VN', options);
-    }
-
-    async function fetchComicData(slug) {
-        const response = await fetch(`https://otruyenapi.com/v1/api/truyen-tranh/${slug}/`);
-        return await response.json();
-    }
-    
-    async function populateSlider() {
-        const slider = document.getElementById('comicSlider');
-        const dotsContainer = document.getElementById('dotsContainer');
-    
-        for (let comic of comics) {
-            const comicData = await fetchComicData(comic.slug);
-            if (comicData.status === 'success') {
-                const comicItem = comicData.data.item;
-                const chapters = comicItem.chapters[0].server_data;
-    
-                const authors = comicItem.author ? comicItem.author.join(', ') : 'Không rõ tác giả';
-                const categories = comicItem.category ? comicItem.category.map(cat => cat.name).join(', ') : 'Không rõ thể loại';
-    
-                const firstChapter = chapters && chapters.length > 0 ? chapters[0].chapter_api_data : null;
-                const lastChapter = chapters && chapters.length > 0 ? chapters[chapters.length - 1].chapter_api_data : null;
-    
-                const sliderItem = document.createElement('div');
-                sliderItem.className = 'slider2-item';
-                sliderItem.innerHTML = `
-                    <img src="${comic.img}" alt="${comicItem.name}">
-                    <div class="comic-info">
-                        <h2><strong>${comic.name || comicData.data.item.name}</strong></h2>
-                        <p><strong>Thể loại:</strong> ${categories}</p>
-                        <p><strong>Cập nhật lần cuối:</strong> <span>${formatDate(comicData.data.seoOnPage.updated_time)}</span></p>
-                        <h7><strong>Mô tả:</strong> ${comicItem.content}</h7>
-                        <div class="button-container">
-                            ${lastChapter ? `<a href="MangaDetails.html?slug=${comic.slug}&chapter=${encodeURIComponent(lastChapter)}">Đọc ngay</a>` : ''}
+        
+        function formatDate(timestamp) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(timestamp).toLocaleDateString('vi-VN', options);
+        }
+        
+        async function fetchComicData(slug) {
+            const response = await fetch(`https://otruyenapi.com/v1/api/truyen-tranh/${slug}/`);
+            return await response.json();
+        }
+        
+        async function populateSlider() {
+            const slider = document.getElementById('comicSlider');
+            const dotsContainer = document.getElementById('dotsContainer');
+        
+            for (let comic of comics) {
+                const comicData = await fetchComicData(comic.slug);
+                if (comicData.status === 'success') {
+                    const comicItem = comicData.data.item;
+                    const chapters = comicItem.chapters[0].server_data;
+        
+                    const authors = comicItem.author ? comicItem.author.join(', ') : 'Không rõ tác giả';
+                    const categories = comicItem.category ? comicItem.category.map(cat => cat.name).join(', ') : 'Không rõ thể loại';
+        
+                    const firstChapter = chapters && chapters.length > 0 ? chapters[0].chapter_api_data : null;
+                    const lastChapter = chapters && chapters.length > 0 ? chapters[chapters.length - 1].chapter_api_data : null;
+        
+                    const sliderItem = document.createElement('div');
+                    sliderItem.className = 'slider2-item';
+                    sliderItem.innerHTML = `
+                        <img src="${comic.img}" alt="${comicItem.name}">
+                        <div class="comic-info">
+                            <h2><strong>${comic.name || comicData.data.item.name}</strong></h2>
+                            <p><strong>Thể loại:</strong> ${categories}</p>
+                            <p><strong>Cập nhật lần cuối:</strong> <span>${formatDate(comicData.data.seoOnPage.updated_time)}</span></p>
+                            <h7><strong>Mô tả:</strong> ${comic.slug === 'tao-muon-tro-thanh-chua-te-bong-toi' ? comic.content : comicItem.content || comicData.data.item.content}</h7>
+                            <div class="button-container">
+                                ${lastChapter ? `<a href="MangaDetails.html?slug=${comic.slug}&chapter=${encodeURIComponent(lastChapter)}">Đọc ngay</a>` : ''}
+                            </div>
                         </div>
-                    </div>
-                `;
-                slider.appendChild(sliderItem);
-    
-                const dot = document.createElement('div');
-                dot.className = 'dot';
-                dot.dataset.index = slider.children.length - 1;
-                dotsContainer.appendChild(dot);
-            } else {
-                console.error(`Không thể lấy dữ liệu truyện: ${comic.slug}. Thông báo: ${comicData.message}`);
+                    `;
+                    slider.appendChild(sliderItem);
+        
+                    const dot = document.createElement('div');
+                    dot.className = 'dot';
+                    dot.dataset.index = slider.children.length - 1;
+                    dotsContainer.appendChild(dot);
+                } else {
+                    console.error(`Không thể lấy dữ liệu truyện: ${comic.slug}. Thông báo: ${comicData.message}`);
+                }
             }
-        }
-
-        const dots = document.querySelectorAll('.dot');
-        dots[0].classList.add('active'); // Set first dot as active
-
-        const updateDots = () => {
-            const index = Math.round(slider.scrollLeft / slider.clientWidth);
-            dots.forEach(dot => dot.classList.remove('active'));
-            if (dots[index]) {
-                dots[index].classList.add('active');
-            }
-        };
-
-        slider.addEventListener('scroll', updateDots);
-
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                slider.scrollTo({
-                    left: dot.dataset.index * slider.clientWidth,
-                    behavior: 'smooth'
+        
+            const dots = document.querySelectorAll('.dot');
+            dots[0].classList.add('active'); // Set first dot as active
+        
+            const updateDots = () => {
+                const index = Math.round(slider.scrollLeft / slider.clientWidth);
+                dots.forEach(dot => dot.classList.remove('active'));
+                if (dots[index]) {
+                    dots[index].classList.add('active');
+                }
+            };
+        
+            slider.addEventListener('scroll', updateDots);
+        
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    slider.scrollTo({
+                        left: dot.dataset.index * slider.clientWidth,
+                        behavior: 'smooth'
+                    });
                 });
             });
-        });
-
-        // Auto-scroll functionality
-        let currentIndex = 0;
-        const totalSlides = slider.children.length;
-        const slideInterval = 5000; // Interval in milliseconds
-
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % totalSlides;
-            slider.scrollTo({
-                left: currentIndex * slider.clientWidth,
-                behavior: 'smooth'
-            });
-        }, slideInterval);
-    }
-    populateSlider();
+        
+            // Auto-scroll functionality
+            let currentIndex = 0;
+            const totalSlides = slider.children.length;
+            const slideInterval = 5000; // Interval in milliseconds
+        
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                slider.scrollTo({
+                    left: currentIndex * slider.clientWidth,
+                    behavior: 'smooth'
+                });
+            }, slideInterval);
+        }
+        
+        populateSlider();
+        
