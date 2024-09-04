@@ -1,152 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="icon" href="img/favicon.png">
+    <title>Manga3K</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .slider2-container {
+            position: relative;
+            width: 100%;
+            height: 500px; /* Điều chỉnh chiều cao nếu cần */
+            overflow: hidden; /* Ẩn thanh cuộn ngang */
+        }
+        
+        .slider2 {
+            display: flex;
+            overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+        
+        .slider2-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            position: relative;
+            height: 100%;
+            flex-shrink: 0; /* Ngăn không cho các phần tử co lại */
+        }
+        .slider2-item h2{
+            font-size: 30px;
+        }
+        .slider2-item img {
+            width: 100%; /* Ảnh chiếm toàn bộ chiều rộng của slider */
+            height: 100%; /* Ảnh chiếm toàn bộ chiều cao của slider */
+            object-fit: cover; /* Đảm bảo ảnh phủ toàn bộ khu vực và duy trì tỷ lệ khung hình */
+        }
+        
+        /* Thông tin truyện */
+        .comic-info {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%; /* Thông tin truyện chiếm một nửa chiều rộng của slider */
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Nền đen trong suốt */
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Căn giữa nội dung theo chiều dọc */
+        }
+        
+        .comic-info h3 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        
+        .comic-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .comic-info h7 {
+            margin: 10px 0;
+            font-size: 14px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 4; /* Giới hạn mô tả ở 4 dòng */
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis; /* Hiển thị dấu "..." nếu mô tả quá dài */
+        }
+        
+        /* Dấu chấm điều hướng */
+        .dots-container {
+            position: absolute;
+            bottom: 10px;
+            left: 70%; /* Đặt dấu chấm vào bên phải */
+            display: flex;
+            gap: 10px;
+        }
+        
+        .dot {
+            width: 20px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background-color: #ff5722;
+        }.button-container a {
+            display: inline-block;
+            padding: 12px 24px; /* Tăng kích thước padding để nút lớn hơn */
+            font-size: 18px; /* Tăng kích thước chữ để nổi bật hơn */
+            font-weight: bold;
+            color: #fff;
+            background-color: #ff5722;
+            border-radius: 8px; /* Tăng độ cong góc cho nút */
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ cho nút */
+        }
+        
+        .button-container a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.3); /* Thay đổi màu sắc và độ trong suốt */
+            transition: all 0.4s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+        }
+        
+        .button-container a:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .button-container a:hover {
+            background-color: #e64a19;
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Tăng độ đậm của bóng đổ khi hover */
+        }
+        
+        .button-container a:active {
+            background-color: #d84315;
+            transform: scale(0.98); /* Tạo hiệu ứng nhấn nút */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Khôi phục bóng đổ khi nhấn */
+        }
+        
+
+    </style>
 </head>
-<style>
-    /* Mega Menu Styles */
-.mega-menu {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    padding: 20px 15px;
-    background-color: #f8f9fa;
-    border-top: 1px solid #e9ecef;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: none;
-    z-index: 1000;
-}
-
-.mega-menu .mega-menu-row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.mega-menu .mega-menu-col {
-    flex: 1;
-    padding: 0 15px;
-}
-
-.mega-menu .mega-menu-col h4 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.mega-menu .mega-menu-col ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.mega-menu .mega-menu-col ul li {
-    margin-bottom: 5px;
-}
-
-.mega-menu .mega-menu-col ul li a {
-    color: #5a5a5a;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.mega-menu .mega-menu-col ul li a:hover {
-    color: #007bff;
-}
-
-/* Show the mega menu on hover */
-.navbar-nav .nav-item:hover .mega-menu {
-    display: block;
-}
-
-</style>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
-        <div class="header__logo">
-            <a href="index.html"><img src="img/Logo.png" style="width:100px;height:auto;margin-right:20px;" alt="Logo"></a>
+<div class="container mt-5">
+    <div class="slider2-container">
+        <div class="slider2" id="comicSlider">
+            <!-- Slider items will be dynamically added here -->
         </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Manga</a>
-                    <div class="mega-menu">
-                        <div class="mega-menu-row">
-                            <div class="mega-menu-col">
-                                <h4>Genres</h4>
-                                <ul>
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Adventure</a></li>
-                                    <li><a href="#">Comedy</a></li>
-                                    <li><a href="#">Drama</a></li>
-                                </ul>
-                            </div>
-                            <div class="mega-menu-col">
-                                <h4>Popular Series</h4>
-                                <ul>
-                                    <li><a href="#">Naruto</a></li>
-                                    <li><a href="#">One Piece</a></li>
-                                    <li><a href="#">Dragon Ball</a></li>
-                                    <li><a href="#">Attack on Titan</a></li>
-                                </ul>
-                            </div>
-                            <div class="mega-menu-col">
-                                <h4>New Releases</h4>
-                                <ul>
-                                    <li><a href="#">Series 1</a></li>
-                                    <li><a href="#">Series 2</a></li>
-                                    <li><a href="#">Series 3</a></li>
-                                    <li><a href="#">Series 4</a></li>
-                                </ul>
-                            </div>
+   
+        <div class="dots-container" id="dotsContainer">
+            <!-- Dots will be dynamically added here -->
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    const comics = [
+        { slug: 'tao-muon-tro-thanh-chua-te-bong-toi', img: 'img/shadow.jpg' },
+        { slug: 'arya-ban-ben-thinh-thoang-lai-treu-gheo-toi-bang-tieng-nga', img: 'img/arya.jpg'},
+        { slug: 'otonari-no-tenshi-sama-ni-itsunomanika-dame-ningen-ni-sareteita-ken', img: 'img/mahiru.jpg', name: 'Thiên sứ nhà bên' },
+        { slug: 'kishuku-gakkou-no-juliet', img: 'img/juliet.png' },
+        { slug: 'that-nghiep-chuyen-sinh-lam-lai-het-suc', img: 'img/roxy.jpg' }
+    ];
+
+    function getStatusInVietnamese(status) {
+        switch (status) {
+            case 'ongoing':
+                return 'Đang tiến hành';
+            case 'completed':
+                return 'Đã hoàn thành';
+            default:
+                return 'Chưa xác định';
+        }
+    }
+
+    function formatDate(timestamp) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(timestamp).toLocaleDateString('vi-VN', options);
+    }
+
+    async function fetchComicData(slug) {
+        const response = await fetch(`https://otruyenapi.com/v1/api/truyen-tranh/${slug}/`);
+        return await response.json();
+    }
+    
+    async function populateSlider() {
+        const slider = document.getElementById('comicSlider');
+        const dotsContainer = document.getElementById('dotsContainer');
+    
+        for (let comic of comics) {
+            const comicData = await fetchComicData(comic.slug);
+            if (comicData.status === 'success') {
+                const comicItem = comicData.data.item;
+                const chapters = comicItem.chapters[0].server_data;
+    
+                const authors = comicItem.author ? comicItem.author.join(', ') : 'Không rõ tác giả';
+                const categories = comicItem.category ? comicItem.category.map(cat => cat.name).join(', ') : 'Không rõ thể loại';
+    
+                const firstChapter = chapters && chapters.length > 0 ? chapters[0].chapter_api_data : null;
+                const lastChapter = chapters && chapters.length > 0 ? chapters[chapters.length - 1].chapter_api_data : null;
+    
+                const sliderItem = document.createElement('div');
+                sliderItem.className = 'slider2-item';
+                sliderItem.innerHTML = `
+                    <img src="${comic.img}" alt="${comicItem.name}">
+                    <div class="comic-info">
+                        <h2><strong>${comic.name || comicData.data.item.name}</strong></h2>
+                        <p><strong>Trạng thái:</strong> ${getStatusInVietnamese(comicItem.status)}</p>
+                        <p><strong>Tác giả:</strong> ${authors}</p>
+                        <p><strong>Thể loại:</strong> ${categories}</p>
+                        <p><strong>Cập nhật lần cuối:</strong> <span>${formatDate(comicData.data.seoOnPage.updated_time)}</span></p>
+                        <h7><strong>Mô tả:</strong> ${comicItem.content}</h7>
+                        <div class="button-container">
+                            ${lastChapter ? `<a href="MangaDetails.html?slug=${comic.slug}&chapter=${encodeURIComponent(lastChapter)}">Đọc ngay</a>` : ''}
                         </div>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Completed</a>
-                    <div class="mega-menu">
-                        <div class="mega-menu-row">
-                            <div class="mega-menu-col">
-                                <h4>Finished Series</h4>
-                                <ul>
-                                    <li><a href="#">Fullmetal Alchemist</a></li>
-                                    <li><a href="#">Death Note</a></li>
-                                    <li><a href="#">Berserk</a></li>
-                                    <li><a href="#">Bleach</a></li>
-                                </ul>
-                            </div>
-                            <div class="mega-menu-col">
-                                <h4>Classic Manga</h4>
-                                <ul>
-                                    <li><a href="#">Astro Boy</a></li>
-                                    <li><a href="#">Doraemon</a></li>
-                                    <li><a href="#">Slam Dunk</a></li>
-                                    <li><a href="#">Sailor Moon</a></li>
-                                </ul>
-                            </div>
-                            <div class="mega-menu-col">
-                                <h4>Staff Picks</h4>
-                                <ul>
-                                    <li><a href="#">Pick 1</a></li>
-                                    <li><a href="#">Pick 2</a></li>
-                                    <li><a href="#">Pick 3</a></li>
-                                    <li><a href="#">Pick 4</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
+                `;
+                slider.appendChild(sliderItem);
     
-    
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                dot.dataset.index = slider.children.length - 1;
+                dotsContainer.appendChild(dot);
+            } else {
+                console.error(`Không thể lấy dữ liệu truyện: ${comic.slug}. Thông báo: ${comicData.message}`);
+            }
+        }
+
+        const dots = document.querySelectorAll('.dot');
+        dots[0].classList.add('active'); // Set first dot as active
+
+        const updateDots = () => {
+            const index = Math.round(slider.scrollLeft / slider.clientWidth);
+            dots.forEach(dot => dot.classList.remove('active'));
+            if (dots[index]) {
+                dots[index].classList.add('active');
+            }
+        };
+
+        slider.addEventListener('scroll', updateDots);
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                slider.scrollTo({
+                    left: dot.dataset.index * slider.clientWidth,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Auto-scroll functionality
+        let currentIndex = 0;
+        const totalSlides = slider.children.length;
+        const slideInterval = 5000; // Interval in milliseconds
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            slider.scrollTo({
+                left: currentIndex * slider.clientWidth,
+                behavior: 'smooth'
+            });
+        }, slideInterval);
+    }
+    populateSlider();
+</script>
+
 </body>
 </html>

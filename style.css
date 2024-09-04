@@ -115,10 +115,10 @@ body {
     margin: 10px 0 0;
     color: #555;
     text-decoration: none;
-    /* white-space: nowrap;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 145px;*/
+    max-width: 145px;
 }
 .slider-item a {
     text-decoration: none; /* Xóa gạch chân khỏi chữ */
