@@ -115,6 +115,10 @@ body {
     margin: 10px 0 0;
     color: #555;
     text-decoration: none;
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 145px;*/
 }
 .slider-item a {
     text-decoration: none; /* Xóa gạch chân khỏi chữ */
@@ -372,6 +376,7 @@ body {
     z-index: 1;
     padding: 20px;
     box-sizing: border-box;
+    text-align: left;
 }
 
 .mega-menu.show {
@@ -400,6 +405,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -10px;
+    
 }
 
 .genre-column {
@@ -440,7 +446,7 @@ body {
 .filter-container a {
     flex: 1;
     /* Chia đều độ rộng cho mỗi liên kết */
-    text-align: center;
+    text-align: left;
     /* Canh giữa văn bản trong mỗi liên kết */
     color: black;
     /* Màu chữ mặc định */

@@ -92,7 +92,6 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -132,7 +131,7 @@
                                     <i class="bi bi-search"></i> <!-- Icon tìm kiếm -->
                                 </button>
                             </div>
-                            <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
+                            <div class="filter-container ml-lg-4 d-flex mb-1">
                                 <div class="dropdown" id="type-select">
                                     <a class="btn" type="button" id="genreDropdown" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
@@ -470,10 +469,9 @@
                                     <img src="https://img.otruyenapi.com/uploads/comics/${encodeURIComponent(comic.slug)}-thumb.jpg" alt="${comic.name}" class="comic-thumbnail">
                                 </div>
                                 <div class="col-md-8">
-                                                            <a href="TruyenDetails.html?slug=${encodeURIComponent(comic.slug)}" class="comic-link">
-
+                                        <a href="TruyenDetails.html?slug=${encodeURIComponent(comic.slug)}" class="comic-link">
                                     <h5 class="comic-title" title="${comic.name}">${comic.name}</h5>
-                                                            </a>
+                                        </a>
                                    <div class="latest-chapters">
                                      <h4>Mới nhất:${latestChapterHtml}</h4>
                                     </div>

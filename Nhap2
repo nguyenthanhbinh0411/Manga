@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Truyện</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        .slider {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .slider-item {
+            min-width: 300px;
+            margin-right: 10px;
+            position: relative;
+        }
+
+        .slider-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        .slider-item .info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        button.prev {
+            left: 10px;
+        }
+
+        button.next {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="manga-slider" class="slider">
+        <!-- Các phần tử slider sẽ được chèn vào đây -->
+    </div>
+
+    <!-- Các nút điều khiển slider -->
+    <button class="prev">‹</button>
+    <button class="next">›</button>
+
+    <script>
+        async function fetchMangaData() {
+            try {
+                const response = await fetch('https://otruyenapi.com/v1/api/danh-sach/dang-phat-hanh');
+                const data = await response.json();
+                return data.data.items; // Giả sử dữ liệu truyện nằm trong data.data.items
+            } catch (error) {
+                console.error('Error fetching manga data:', error);
+                return []; // Trả về mảng rỗng nếu có lỗi
+            }
+        }
+
+        async function initSlider() {
+            const mangaItems = await fetchMangaData();
+            const slider = document.getElementById('manga-slider');
+
+            // Nếu không có dữ liệu, không làm gì cả
+            if (!mangaItems || mangaItems.length === 0) return;
+
+            mangaItems.forEach(item => {
+                const sliderItem = document.createElement('div');
+                sliderItem.className = 'slider-item';
+
+                sliderItem.innerHTML = `
+                    <img src="https://img.otruyenapi.com/uploads/comics/${item.slug}-thumb.jpg" alt="${item.title}">
+                    <div class="info">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                    </div>
+                `;
+
+                slider.appendChild(sliderItem);
+            });
+
+            setupSliderControls();
+        }
+
+        function setupSliderControls() {
+            const prevButton = document.querySelector('.prev');
+            const nextButton = document.querySelector('.next');
+            const slider = document.getElementById('manga-slider');
+            let index = 0;
+
+            function updateSlider() {
+                const sliderWidth = slider.clientWidth;
+                slider.style.transform = `translateX(-${index * sliderWidth}px)`;
+            }
+
+            prevButton.addEventListener('click', () => {
+                if (index > 0) {
+                    index--;
+                    updateSlider();
+                }
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (index < slider.children.length - 1) {
+                    index++;
+                    updateSlider();
+                }
+            });
+
+            // Optional: Adjust slider width when window resizes
+            window.addEventListener('resize', updateSlider);
+        }
+
+        document.addEventListener('DOMContentLoaded', initSlider);
+    </script>
+</body>
+</html>
