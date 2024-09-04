@@ -124,20 +124,19 @@
                             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-
                         <div class="collapse navbar-collapse" id="navbarNav">
-                            <div class="search-container ml-lg-3 d-flex align-items-center">
-
+                            <div class="search-container ml-lg-4 d-flex align-items-center">
                                 <input type="text" id="search-input" class="form-control mr-2"
                                     placeholder="Tìm kiếm truyện...">
                                 <button id="search-btn" class="btn btn-danger">
                                     <i class="bi bi-search"></i> <!-- Icon tìm kiếm -->
                                 </button>
                             </div>
-                            <div id="filter-container" class=" ml-lg-4 d-flex align-items-center mb-1">
-                                <div class="dropdown" id="type-select" style="position: relative;">
-                                    <a class="btn" id="genreDropdown">
-                                        Thể loại <i class="bi bi-caret-down-fill"></i>
+                            <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
+                                <div class="dropdown" id="type-select">
+                                    <a class="btn" type="button" id="genreDropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        Thể loại
                                     </a>
                                     <div class="mega-menu" aria-labelledby="genreDropdown">
                                         <div id="genre-buttons" class="row">
@@ -148,22 +147,22 @@
                             </div>
                             <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
 
-                                <a href="#" id="dang-phat-hanh" data-type="dang-phat-hanh" style="padding: 6px;">
+                                <a href="index.html" id="dang-phat-hanh" data-type="dang-phat-hanh"
+                                    style="padding: 6px 0;">
                                     Đang phát hành
                                 </a>
                             </div>
                             <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
-                                <a href="#" id="hoan-thanh" data-type="hoan-thanh" style="padding: 6px 0;">
+                                <a href="index.html" id="hoan-thanh" data-type="hoan-thanh" style="padding: 6px 0;">
                                     Hoàn thành
                                 </a>
                             </div>
                             <div class="filter-container ml-lg-4 d-flex align-items-center mb-1">
-                                <a href="#" id="sap-ra-mat" data-type="sap-ra-mat" style="padding: 6px 0;">
+                                <a href="index.html" id="sap-ra-mat" data-type="sap-ra-mat" style="padding: 6px 0;">
                                     Sắp ra mắt
                                 </a>
                             </div>
                         </div>
-
 
                     </nav>
                 </div>
