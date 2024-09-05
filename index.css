@@ -167,14 +167,14 @@ body {
 }
 
 .dot.active {
-    background-color: #ff5722;
+    background-color: red;
 }.button-container a {
     display: inline-block;
     padding: 12px 24px; /* Tăng kích thước padding để nút lớn hơn */
     font-size: 18px; /* Tăng kích thước chữ để nổi bật hơn */
     font-weight: bold;
     color: #fff;
-    background-color: #ff5722;
+    background-color: red;
     border-radius: 8px; /* Tăng độ cong góc cho nút */
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;

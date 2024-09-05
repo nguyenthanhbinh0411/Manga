@@ -148,7 +148,6 @@ h1 {
 
 
 .sidebar {
-    width: 300px;
     background-color: #fff;
     border-radius: 8px;
     padding: 20px;
@@ -195,6 +194,65 @@ h1 {
 }
 
 
+.history-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    border-radius: 8px; /* Tăng độ bo góc */
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Thêm transition cho shadow */
+    border: 1px solid transparent; /* Thêm border */
+}
+
+.history-item:hover {
+    background-color: #e9ecef;
+    border: 1px solid #007bff; /* Thêm viền khi hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng khi hover */
+}
+
+.comic-thumbnail {
+    width: 50px;
+    height: 75px;
+    border-radius: 4px;
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng cho thumbnail */
+}
+
+.history-item a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+    transition: color 0.3s ease; /* Thêm hiệu ứng chuyển màu khi hover */
+}
+
+.history-item a:hover {
+    text-decoration: underline;
+    color: #0056b3; /* Đổi màu khi hover */
+}
+
+/* Updated Delete Button */
+.delete-button {
+    width: 30px;
+    height: 30px;
+    background-color: #e74c3c;
+    color: white;
+    border: 2px solid transparent; /* Transparent border initially */
+    margin-left: auto;
+    cursor: pointer;
+    border-radius: 5px; /* Smooth rounded button */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+/* Hover Effect */
+.delete-button:hover {
+    background-color: white; /* Swap background to white */
+    color: #e74c3c; /* Change text to red */
+    border-color: #e74c3c; /* Add red border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increase shadow intensity */
+    transform: translateY(-3px); /* Slight upward movement on hover */
+}
 
 @media (max-width: 768px) {
     .comic-content {

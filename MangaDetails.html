@@ -144,6 +144,46 @@
                 max-width: 100%;
             }
         }
+        .chapter-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .nav-button {
+            background-color: red; /* Màu nền của nút */
+            border: none;
+            cursor: pointer;
+            font-size: 24px; /* Kích thước icon */
+            color: white; /* Màu của icon */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu */
+            padding: 10px; /* Thêm khoảng đệm để nút lớn hơn */
+            border-radius: 5px; /* Làm tròn các góc của nút */
+        }
+        
+        .nav-button:hover {
+            background-color: darkred; /* Màu nền khi hover */
+            color: #fff; /* Màu icon khi hover */
+        }
+        
+        #home-button {
+            font-size: 18px; /* Kích thước icon của nút trang chủ */
+        }
+        
+        #follow-button {
+            font-size: 24px; /* Kích thước icon của nút theo dõi */
+        }
+        .header2 {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            z-index: 1000; /* Đảm bảo nav nằm trên các phần tử khác */
+        
+        }
     </style>
 </head>
 
@@ -152,7 +192,7 @@
         <div class="loader"></div>
     </div>
 
-    <header class="header py-3">
+    <header class="header2 py-3">
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-md-1 col-lg-2 text-center text-md-left">
@@ -218,22 +258,38 @@
         <p style="margin-top: 50px;">q</p>
     </div>
 
+    
+    
     <div class="container mt-5">
-        <h1 id="comic-title">Loading...</h1>
+        <nav aria-label="breadcrumb" class="breadcrumb-container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="index.html">Thể loại</a></li>
+                <li class="breadcrumb-item" id="manga-title-breadcrumb">Loading...</li>
+                <li class="breadcrumb-item active" aria-current="page" id="chapter-title-breadcrumb">Loading...</li>
+            </ol>
+        </nav>
+        <h1 id="comic-title">Loading... <span id="chapter-title">- Loading...</span></h1>
 
         <div class="chapter-navigation mt-5">
-            <button id="prev-chapter">Prev</button>
+            <a href="index.html" id="home-button" class="nav-button">
+                <i class="bi bi-house-door"></i>
+            </a>
+            
+            <button id="prev-chapter" class="nav-button">
+                <i class="bi bi-chevron-left"></i>
+            </button>
             <select id="chapter-dropdown"></select>
-            <button id="next-chapter">Next</button>
+            <button id="next-chapter" class="nav-button">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+            <button id="follow-button" class="nav-button">
+                <i class="bi bi-heart"></i>
+            </button>
         </div>
+        
         <div id="chapter-content"></div>
-        <div class="new-comics">
-            <h3>Các Bộ Truyện Đang Phát Hành</h3>
-            <ul id="new-comics-list"></ul>
-            <div class="load-more" id="load-more">
-                <button id="load-more-btn">Xem Thêm</button>
-            </div>
-        </div>
+        
     </div>
     <!-- Footer -->
     <footer class="footer bg-dark text-white py-4 mt-5">
@@ -248,7 +304,203 @@
     <script src="Mangadetails.js"></script>
     <script src="index.js"></script>
     <script>
-
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+            const chapterUrl = urlParams.get('chapter'); // Lấy URL của chương từ tham số
+            const mangaApiUrl = `https://otruyenapi.com/v1/api/truyen-tranh/${slug}`;
+            let chapters = [];
+            let currentChapterIndex = 0;
+        
+            console.log('Slug:', slug);
+            console.log('Chapter URL:', chapterUrl);
+        
+            // Fetch manga data
+            fetch(mangaApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === "success") {
+                        const manga = data.data.item;
+                        chapters = manga.chapters[0].server_data;
+        
+                        // Cập nhật tiêu đề và breadcrumb
+                        updateTitleAndBreadcrumb(manga.name);
+        
+                        const chapterDropdown = document.getElementById("chapter-dropdown");
+                        chapters.forEach((chapter, index) => {
+                            const option = document.createElement("option");
+                            option.value = index;
+                            option.textContent = `Chương ${chapter.chapter_name}`;
+                            chapterDropdown.appendChild(option);
+                        });
+        
+                        chapterDropdown.addEventListener("change", () => {
+                            currentChapterIndex = parseInt(chapterDropdown.value);
+                            updateChapter(chapters[currentChapterIndex].chapter_api_data);
+                        });
+        
+                        document.getElementById("prev-chapter").addEventListener("click", () => {
+                            if (currentChapterIndex > 0) {
+                                currentChapterIndex--;
+                                chapterDropdown.value = currentChapterIndex;
+                                updateChapter(chapters[currentChapterIndex].chapter_api_data);
+                            }
+                        });
+        
+                        document.getElementById("next-chapter").addEventListener("click", () => {
+                            if (currentChapterIndex < chapters.length - 1) {
+                                currentChapterIndex++;
+                                chapterDropdown.value = currentChapterIndex;
+                                updateChapter(chapters[currentChapterIndex].chapter_api_data);
+                            }
+                        });
+        
+                        // Set initial chapter based on URL parameter or default to first chapter
+                        if (chapterUrl) {
+                            const initialChapter = chapters.find(chap => chap.chapter_api_data === decodeURIComponent(chapterUrl));
+                            if (initialChapter) {
+                                currentChapterIndex = chapters.indexOf(initialChapter);
+                                chapterDropdown.value = currentChapterIndex;
+                                updateChapter(initialChapter.chapter_api_data);
+                            } else {
+                                updateChapter(chapters[0].chapter_api_data);
+                            }
+                        } else {
+                            updateChapter(chapters[0].chapter_api_data);
+                        }
+                    } else {
+                        console.error('API response status not success:', data.status);
+                        const comicTitleElement = document.getElementById("comic-title");
+                        const chapterTitleElement = document.getElementById("chapter-title");
+                        if (comicTitleElement) comicTitleElement.textContent = "Không tìm thấy truyện tranh.";
+                        if (chapterTitleElement) chapterTitleElement.textContent = "";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching manga data:', error);
+                    const comicTitleElement = document.getElementById("comic-title");
+                    const chapterTitleElement = document.getElementById("chapter-title");
+                    if (comicTitleElement) comicTitleElement.textContent = "Không tìm thấy truyện tranh.";
+                    if (chapterTitleElement) chapterTitleElement.textContent = "";
+                });
+        
+            function updateTitleAndBreadcrumb(mangaName) {
+                const comicTitleElement = document.getElementById("comic-title");
+                const mangaTitleBreadcrumbElement = document.getElementById("manga-title-breadcrumb");
+                if (comicTitleElement) comicTitleElement.textContent = mangaName;
+                if (mangaTitleBreadcrumbElement) mangaTitleBreadcrumbElement.textContent = mangaName;
+            }
+        
+            function updateChapter(apiUrl) {
+                console.log('Loading chapter from URL:', apiUrl);
+                fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(chapterData => {
+                        displayChapter(chapterData);
+        
+                        // Update breadcrumb and title
+                        const currentChapter = chapters[currentChapterIndex];
+                        const chapterTitleBreadcrumbElement = document.getElementById('chapter-title-breadcrumb');
+                        const chapterTitleElement = document.getElementById('chapter-title');
+                        if (chapterTitleBreadcrumbElement) chapterTitleBreadcrumbElement.textContent = `Chương ${currentChapter.chapter_name}`;
+                        if (chapterTitleElement) chapterTitleElement.textContent = `Chương ${currentChapter.chapter_name}`;
+        
+                        // Update URL and reload page
+                        const newUrl = `?slug=${slug}&chapter=${encodeURIComponent(currentChapter.chapter_api_data)}`;
+                        window.history.replaceState({}, '', newUrl);
+        
+                        // Hide/Show navigation buttons
+                        updateNavigationButtons();
+                    })
+                    .catch(error => console.error('Error fetching chapter data:', error));
+            }
+        
+            function displayChapter(data) {
+                const chapterContent = document.getElementById("chapter-content");
+                if (chapterContent) {
+                    chapterContent.innerHTML = '';
+        
+                    if (data.status === "success") {
+                        const chapter = data.data.item;
+                        const domainCdn = data.data.domain_cdn;
+                        const chapterPath = chapter.chapter_path;
+                        const chapterImages = chapter.chapter_image;
+        
+                        chapterImages.forEach(image => {
+                            const img = document.createElement("img");
+                            img.src = `${domainCdn}/${chapterPath}/${image.image_file}`;
+                            img.alt = `Page ${image.image_page}`;
+                            chapterContent.appendChild(img);
+                        });
+                    } else {
+                        chapterContent.innerHTML = 'Không thể tải chương này.';
+                        console.error('API chapter response status not success:', data.status);
+                    }
+                }
+            }
+        
+            function updateNavigationButtons() {
+                const prevButton = document.getElementById("prev-chapter");
+                const nextButton = document.getElementById("next-chapter");
+                if (prevButton) prevButton.style.display = (currentChapterIndex > 0) ? "block" : "none";
+                if (nextButton) nextButton.style.display = (currentChapterIndex < chapters.length - 1) ? "block" : "none";
+            }
+        });
+                // Mega menu functionality for genre
+                async function populateMegaMenu(genres) {
+                    const genreButtons = document.getElementById('genre-buttons');
+                    genreButtons.innerHTML = '';
+                    const numColumns = 4;
+                    const itemsPerColumn = Math.ceil(genres.length / numColumns);
+            
+                    for (let i = 0; i < numColumns; i++) {
+                        const column = document.createElement('div');
+                        column.className = 'genre-column';
+            
+                        for (let j = i * itemsPerColumn; j < (i + 1) * itemsPerColumn && j < genres.length; j++) {
+                            const genre = genres[j];
+                            const a = document.createElement('a');
+                            a.className = 'btn genre-button';
+                            a.textContent = genre.name;
+                            a.addEventListener('click', () => {
+                                window.location.href = `index.html?genre=${genre.slug}`;
+                            });
+                            column.appendChild(a);
+                        }
+            
+                        genreButtons.appendChild(column);
+                    }
+                }
+            
+                // Fetch and populate genres when page loads
+                async function fetchAndPopulateGenres() {
+                    try {
+                        const genresUrl = 'https://otruyenapi.com/v1/api/the-loai';
+                        const genresResponse = await fetch(genresUrl);
+                        const genresResult = await genresResponse.json();
+                        const genresData = genresResult.data;
+            
+                        if (genresData && genresData.items && Array.isArray(genresData.items)) {
+                            populateMegaMenu(genresData.items);
+                        } else {
+                            console.error('Dữ liệu thể loại không hợp lệ:', genresResult);
+                        }
+                    } catch (error) {
+                        console.error('Lỗi khi tải dữ liệu thể loại:', error);
+                    }
+                }
+            
+                fetchAndPopulateGenres();
     </script>
 </body>
 
