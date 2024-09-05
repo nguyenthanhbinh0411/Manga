@@ -242,10 +242,10 @@ const comicList = document.getElementById('comic-list');
                 comicItem.innerHTML = `
                     <div class="isekai-list">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-4">
                                     <img src="https://img.otruyenapi.com/uploads/comics/${encodeURIComponent(comic.slug)}-thumb.jpg" alt="${comic.name}" class="comic-thumbnail">
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-8">
                                         <a href="TruyenDetails.html?slug=${encodeURIComponent(comic.slug)}" class="comic-link">
                                     <h5 class="comic-title" title="${comic.name}">${comic.name}</h5>
                                         </a>
