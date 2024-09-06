@@ -201,13 +201,13 @@ body {
 }
 
 .button-container a:hover {
-    background-color: #e64a19;
+    background-color: red;
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Tăng độ đậm của bóng đổ khi hover */
 }
 
 .button-container a:active {
-    background-color: #d84315;
+    background-color: red;
     transform: scale(0.98); /* Tạo hiệu ứng nhấn nút */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Khôi phục bóng đổ khi nhấn */
 }
