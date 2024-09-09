@@ -4,6 +4,11 @@ body {
     font-family: "Roboto Condensed", sans-serif;
     -webkit-font-smoothing: antialiased; /* Cải thiện độ mịn văn bản trong trình duyệt WebKit */
     -moz-osx-font-smoothing: grayscale; /* Cải thiện độ mịn văn bản trong Firefox trên macOS */
+    background-image: url('https://images6.alphacoders.com/132/1326238.png'); /* Đường dẫn đến ảnh */
+    background-size: cover; /* Ảnh bao phủ toàn bộ phần tử */
+    background-position: center center; /* Ảnh căn giữa */
+    background-repeat: no-repeat; /* Không lặp lại hình ảnh */
+    background-attachment: fixed; /* Ảnh cố định khi cuộn trang */
 }
 
 
@@ -52,13 +57,13 @@ body {
 
 
 .header {
-    background-color: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.95); /* Màu nền trắng với độ trong suốt 80% */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ nhẹ */
     z-index: 1000; /* Đảm bảo nav nằm trên các phần tử khác */
 
 }
@@ -89,13 +94,14 @@ body {
     position: relative;
     max-width: 1200px;
     margin: 20px auto;
-    background: #fff;
     overflow: hidden;
+    
 }
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
     will-change: transform;
+    
 }
 .slider-item {
     box-sizing: border-box;

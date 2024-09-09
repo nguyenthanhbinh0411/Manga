@@ -31,7 +31,6 @@
         .chapter-navigation {
             display: flex;
             justify-content: center;
-            margin: 10px 0;
         }
 
         .chapter-navigation button,
@@ -87,24 +86,18 @@
         }
 
         .chapter-navigation {
-            position: sticky;
-            top: 0;
-            /* Đặt khoảng cách từ đầu trang khi phần tử dính lên đầu */
-            background-color: #fff;
-            /* Màu nền để phần tử nổi bật trên nền cuộn */
-            border-bottom: 1px solid #ddd;
-            /* Thêm viền dưới để phân cách với nội dung cuộn */
-            padding: 10px;
-            /* Khoảng cách bên trong để tạo không gian */
-            z-index: 1000;
-            /* Đảm bảo phần tử nằm trên các phần tử khác */
-            display: flex;
-            /* Sử dụng flexbox để căn chỉnh các nút và dropdown */
-            justify-content: center;
-            /* Căn giữa các phần tử bên trong */
-            gap: 10px;
-            /* Khoảng cách giữa các phần tử bên trong */
-        }
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 
         .chapter-navigation button,
         .chapter-navigation select {
@@ -112,6 +105,8 @@
             /* Đảm bảo không có khoảng cách ngoài cho các phần tử */
             padding: 5px 10px;
             /* Thêm khoảng cách bên trong cho nút và dropdown */
+        }ol.breadcrumb{
+            padding-left: 25%;
         }
 
         /* CSS cập nhật cho màn hình điện thoại */
@@ -142,6 +137,8 @@
 
             .new-comics img {
                 max-width: 100%;
+            }ol.breadcrumb{
+                padding-left: 5%;
             }
         }
         .chapter-navigation {
@@ -184,6 +181,33 @@
             z-index: 1000; /* Đảm bảo nav nằm trên các phần tử khác */
         
         }
+        /* CSS for the chapter dropdown */
+#chapter-dropdown {
+    width: 200px; /* Đặt chiều rộng chiếm toàn bộ phần tử chứa */
+    padding: 10px; /* Thêm khoảng cách bên trong */
+    font-size: 16px; /* Thay đổi kích thước font */
+    border-radius: 8px; /* Bo tròn các góc */
+    border: 1px solid #ccc; /* Đặt màu viền */
+    background-color: #f9f9f9; /* Màu nền */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
+    transition: all 0.3s ease-in-out; /* Hiệu ứng chuyển tiếp */
+    cursor: pointer; /* Thay đổi con trỏ thành dạng pointer */
+}
+
+
+/* Hover effect */
+#chapter-dropdown:hover {
+    background-color: #f1f1f1; /* Thay đổi màu nền khi hover */
+    border-color: #888; /* Thay đổi màu viền khi hover */
+}
+
+/* Focus effect */
+#chapter-dropdown:focus {
+    outline: none; /* Xóa viền focus mặc định */
+    border-color: #007bff; /* Đổi màu viền khi được chọn */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng bóng đổ khi chọn */
+}/* Đặt hình ảnh làm background cho toàn bộ trang */
+
     </style>
 </head>
 
@@ -254,33 +278,38 @@
             </div>
         </div>
     </header>
-    <div class="container">
-        <nav aria-label="breadcrumb" class="breadcrumb-container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="index.html">Thể loại</a></li>
-                <li class="breadcrumb-item" id="manga-title-breadcrumb">Loading...</li>
-                <li class="breadcrumb-item active" aria-current="page" id="chapter-title-breadcrumb">Loading...</li>
-            </ol>
-        </nav>
-        <h1 id="comic-title">Loading... <span id="chapter-title">- Loading...</span></h1>
+    <div class="content"style="background-color: #fff;">
+    <nav aria-label="breadcrumb" class="breadcrumb-container">
+        <ol class="breadcrumb">
+            <li  class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="index.html">Thể loại</a></li>
+            <li class="breadcrumb-item" id="manga-title-breadcrumb">Loading...</li>
+            <li class="breadcrumb-item active" aria-current="page" id="chapter-title-breadcrumb">Loading...</li>
+        </ol>
 
-        <div class="chapter-navigation mt-5">
-            <a href="index.html" id="home-button" class="nav-button">
-                <i class="bi bi-house-door"></i>
-            </a>
-            
-            <button id="prev-chapter" class="nav-button">
-                <i class="bi bi-chevron-left"></i>
-            </button>
-            <select id="chapter-dropdown"></select>
-            <button id="next-chapter" class="nav-button">
-                <i class="bi bi-chevron-right"></i>
-            </button>
-            <button id="follow-button" class="nav-button">
-                <i class="bi bi-heart"></i>
-            </button>
-        </div>
+    </nav>
+    <h1 id="comic-title" style="margin: 0;padding: 10px;text-align: center;">Loading... <span id="chapter-title">- Loading...</span></h1>
+</div>
+    <div class="chapter-navigation">
+        <a href="index.html" id="home-button" class="nav-button">
+            <i class="bi bi-house-door"></i>
+        </a>
+        
+        <button id="prev-chapter" class="nav-button">
+            <i class="bi bi-chevron-left"></i>
+        </button>
+        <select id="chapter-dropdown"></select>
+        <button id="next-chapter" class="nav-button">
+            <i class="bi bi-chevron-right"></i>
+        </button>
+        <button id="follow-button" class="nav-button">
+            <i class="bi bi-heart"></i>
+        </button>
+    </div>
+    <div class="container" style="padding-top: 0px;">
+        
+       
+        
         
         <div id="chapter-content"></div>
         
@@ -336,6 +365,7 @@
                         chapterDropdown.addEventListener("change", () => {
                             currentChapterIndex = parseInt(chapterDropdown.value);
                             updateChapter(chapters[currentChapterIndex].chapter_api_data);
+                            window.scrollTo(0, 0);
                         });
         
                         document.getElementById("prev-chapter").addEventListener("click", () => {
@@ -343,6 +373,7 @@
                                 currentChapterIndex--;
                                 chapterDropdown.value = currentChapterIndex;
                                 updateChapter(chapters[currentChapterIndex].chapter_api_data);
+                                window.scrollTo(0, 0);
                             }
                         });
         
@@ -351,6 +382,7 @@
                                 currentChapterIndex++;
                                 chapterDropdown.value = currentChapterIndex;
                                 updateChapter(chapters[currentChapterIndex].chapter_api_data);
+                                window.scrollTo(0, 0);
                             }
                         });
         
@@ -495,6 +527,24 @@
                 }
             
                 fetchAndPopulateGenres();
+                    window.addEventListener('scroll', function() {
+                        var chapterNav = document.querySelector('.chapter-navigation');
+                        var header = document.querySelector('.header2');
+                        var headerHeight = header.offsetHeight;
+                        
+                        if (window.pageYOffset > headerHeight) {
+                            chapterNav.style.position = 'fixed';
+                            chapterNav.style.top = '0';
+                            chapterNav.style.left = '0';
+                            chapterNav.style.right = '0';
+                            chapterNav.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                        } else {
+                            chapterNav.style.position = 'sticky';
+                            chapterNav.style.top = headerHeight + 'px';
+                            chapterNav.style.boxShadow = 'none';
+                        }
+                    });
+                    
     </script>
 </body>
 

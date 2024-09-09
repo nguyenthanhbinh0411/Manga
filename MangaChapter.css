@@ -5,13 +5,16 @@ h1 {
 .comic-detail {
     display: flex;
     max-width: 1200px;
-    background-color: #fff;
-    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.9); /* Màu nền trắng với độ trong suốt 80% */
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     flex-direction: row;
     gap: 20px;
+}
+
+.slider{
+  color: #fff;
 }
 
 .comic-header {
@@ -275,11 +278,6 @@ h1 {
         align-items: center;
     }
 
-    .sidebar {
-        display: none;
-        width: auto;
-    }
-
     .slider-container {
         display: none;
     }
@@ -311,9 +309,6 @@ h1 {
         font-size: 14px;
     }
 
-    .sidebar {
-        display: none;
-    }
 
     .slider-container {
         display: none;
