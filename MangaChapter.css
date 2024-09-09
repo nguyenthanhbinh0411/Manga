@@ -207,7 +207,7 @@ h1 {
 
 .history-item:hover {
     background-color: #e9ecef;
-    border: 1px solid #007bff; /* Thêm viền khi hover */
+    border: 1px solid red; /* Thêm viền khi hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng khi hover */
 }
 
@@ -228,7 +228,7 @@ h1 {
 
 .history-item a:hover {
     text-decoration: underline;
-    color: #0056b3; /* Đổi màu khi hover */
+    color: red; /* Đổi màu khi hover */
 }
 
 /* Updated Delete Button */
