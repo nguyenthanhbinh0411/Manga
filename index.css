@@ -215,6 +215,9 @@ body {
 @media (max-width: 768px) {
     .slider2-container {
         display:none;
+    }body{
+        background-image: url('https://i.pinimg.com/originals/55/17/49/5517490d30f525e65162fad16f80d7ce.jpg'); /* Đường dẫn đến ảnh */
+
     }
     
 }
