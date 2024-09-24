@@ -4,6 +4,11 @@ body {
     font-family: "Roboto Condensed", sans-serif;
     -webkit-font-smoothing: antialiased; /* Cải thiện độ mịn văn bản trong trình duyệt WebKit */
     -moz-osx-font-smoothing: grayscale; /* Cải thiện độ mịn văn bản trong Firefox trên macOS */
+    background-image: url('https://images6.alphacoders.com/132/1326238.png'); /* Đường dẫn đến ảnh */
+    background-size: cover; /* Ảnh bao phủ toàn bộ phần tử */
+    background-position: center center; /* Ảnh căn giữa */
+    background-repeat: no-repeat; /* Không lặp lại hình ảnh */
+    background-attachment: fixed; /* Ảnh cố định khi cuộn trang */
 }
 
 
@@ -52,13 +57,13 @@ body {
 
 
 .header {
-    background-color: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.95); /* Màu nền trắng với độ trong suốt 80% */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ nhẹ */
     z-index: 1000; /* Đảm bảo nav nằm trên các phần tử khác */
 
 }
@@ -83,68 +88,54 @@ body {
 .search-container input {
     margin-right: 10px;
 }
+
 /* Thanh slider */
 .slider-container {
     position: relative;
     max-width: 1200px;
     margin: 20px auto;
-    background: #fff;
-    border: 1px solid #ddd;
     overflow: hidden;
+    
 }
-
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
+    will-change: transform;
+    
 }
-
 .slider-item {
-    flex: 0 0 16.6667%;
     box-sizing: border-box;
     padding: 15px;
-    position: relative;
     transition: transform 0.3s ease;
-    display: flex;
-    align-items: flex-end; /* Đặt tiêu đề ở dưới cùng của ảnh */
 }
-
 .slider-item img {
-    width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của phần tử chứa */
+    width: 100%;
     height: 200px;
     object-fit: cover;
+    border-radius: 8px;
     transition: transform 0.3s ease;
 }
-
 .slider-item h3 {
-    position: absolute;
-    bottom: 0; /* Đặt tiêu đề ngay ở dưới cùng của phần tử */
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5); /* Nền mờ để chữ nổi bật */
-    padding: 5px 10px;
-    font-size: 14px;
-    margin: 0;
     text-align: center;
+    font-size: 14px;
+    margin: 10px 0 0;
+    color: #555;
     text-decoration: none;
-    transition: color 0.3s;
-    z-index: 1;
-    width: 100%; /* Đảm bảo tiêu đề bao phủ toàn bộ chiều rộng của ảnh */
-    box-sizing: border-box; /* Đảm bảo padding không làm ảnh hưởng đến chiều rộng của tiêu đề */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 145px;
 }
-
+.slider-item a {
+    text-decoration: none; /* Xóa gạch chân khỏi chữ */
+}
 .slider-item:hover img {
     transform: scale(1.05);
 }
-
 .slider-item:hover h3 {
-    color: red;
+    color: #007bff;
 }
-
-.nav-buttons {
+.slider-container.nav-buttons {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -154,38 +145,101 @@ body {
     pointer-events: none;
 }
 
+.slider-container.search-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.slider-container.search-container input,
+.slider-container.filter-container select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+.slider-container.search-container button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.slider-container.search-container button:hover {
+    background-color: #0056b3;
+}
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (min-width: 769px) {
+    .slider-item {
+        flex: 0 0 16.6667%; /* Hiển thị 6 truyện mỗi lần */
+    }
+}
+@media (max-width: 768px) {
+    .slider-item {
+        flex: 0 0 33.3333%; /* Hiển thị 3 truyện mỗi lần trên màn hình nhỏ hơn */
+    }
+    
+}
+@media (max-width: 480px) {
+    .slider-item {
+        flex: 0 0 50%; /* Hiển thị 2 truyện mỗi lần trên màn hình nhỏ hơn */
+    }
+    .slider-item h3{
+        max-width:120px;
+    }
+}
+.nav-buttons {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+}
+
 .nav-buttons button {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     border: none;
     padding: 10px;
     cursor: pointer;
     pointer-events: all;
     outline: none;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 24px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .nav-buttons button:hover {
-    color: red;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 768px) {
-    .slider-item {
-        flex: 0 0 50%;
-    }
+.nav-buttons button:focus {
+    outline: none;
 }
 
-@media (max-width: 480px) {
-    .slider-item {
-        flex: 0 0 100%;
-    }
+.nav-buttons button:active {
+    transform: scale(0.9);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
-
 
 /* Comic List */
 .comic-item {
@@ -332,6 +386,7 @@ body {
     z-index: 1;
     padding: 20px;
     box-sizing: border-box;
+    text-align: left;
 }
 
 .mega-menu.show {
@@ -360,6 +415,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -10px;
+    
 }
 
 .genre-column {
@@ -400,7 +456,7 @@ body {
 .filter-container a {
     flex: 1;
     /* Chia đều độ rộng cho mỗi liên kết */
-    text-align: center;
+    text-align: left;
     /* Canh giữa văn bản trong mỗi liên kết */
     color: black;
     /* Màu chữ mặc định */

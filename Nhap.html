@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fff;
         }
         h1 {
             text-align: center;
@@ -24,16 +24,14 @@
             max-width: 1200px;
             margin: 20px auto;
             background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
             overflow: hidden;
         }
         .slider {
             display: flex;
             transition: transform 0.5s ease-in-out;
+            will-change: transform;
         }
         .slider-item {
-            flex: 0 0 16.6667%; /* Hiển thị 6 truyện mỗi lần */
             box-sizing: border-box;
             padding: 15px;
             transition: transform 0.3s ease;
@@ -124,11 +122,28 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        /* Responsive */
+        @media (min-width: 769px) {
+            .slider-item {
+                flex: 0 0 16.6667%; /* Hiển thị 6 truyện mỗi lần */
+            }
+        }
+        @media (max-width: 768px) {
+            .slider-item {
+                flex: 0 0 33.3333%; /* Hiển thị 3 truyện mỗi lần trên màn hình nhỏ hơn */
+            }
+        }
+        @media (max-width: 480px) {
+            .slider-item {
+                flex: 0 0 50%; /* Hiển thị 2 truyện mỗi lần trên màn hình nhỏ hơn */
+            }
+        }
     </style>
 </head>
 <body>
     <h1>Danh Sách Truyện</h1>
-
+<div class="container">
     <!-- Thanh slider -->
     <div class="slider-container">
         <div class="slider" id="slider">
@@ -138,13 +153,14 @@
             <button id="prevBtn">&larr;</button>
             <button id="nextBtn">&rarr;</button>
         </div>
-    </div>
+    </div></div>
     <script>
         const slider = document.getElementById('slider');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         let offset = 0;
-        const slideWidth = 100 / 6; // Mỗi lần cuộn 1/6 của thanh slider
+        let slideWidth = 100 / 6; // Mặc định 6 items trên màn hình lớn
+        let interval;
 
         async function fetchSliderComics() {
             try {
@@ -164,13 +180,16 @@
                     `;
                     slider.appendChild(comicItem);
                 });
+
+                updateSlideWidth();
+                startAutoSlide();
             } catch (error) {
                 console.error('Lỗi khi tải dữ liệu slider:', error);
             }
         }
 
         function slideNext() {
-            const maxOffset = -(slider.children.length - 6) * slideWidth;
+            const maxOffset = -(slider.children.length - getItemsToShow()) * slideWidth;
             if (offset > maxOffset) {
                 offset -= slideWidth;
                 slider.style.transform = `translateX(${offset}%)`;
@@ -184,10 +203,58 @@
             }
         }
 
-        nextBtn.addEventListener('click', slideNext);
-        prevBtn.addEventListener('click', slidePrev);
+        function startAutoSlide() {
+            interval = setInterval(() => {
+                slideNext();
+                if (offset <= -(slider.children.length - getItemsToShow()) * slideWidth) {
+                    offset = 0;
+                    slider.style.transform = `translateX(${offset}%)`;
+                }
+            }, 3000); // Thay đổi mỗi 3 giây
+        }
+
+        function stopAutoSlide() {
+            clearInterval(interval);
+        }
+
+        function updateSlideWidth() {
+            if (window.innerWidth <= 480) {
+                slideWidth = 100 / 2; // 18 items trên màn hình nhỏ
+            } else if (window.innerWidth <= 768) {
+                slideWidth = 100 / 3;  // 3 items trên tablet
+            } else {
+                slideWidth = 100 / 6;  // 6 items trên màn hình lớn
+            }
+        }
+
+        function getItemsToShow() {
+            if (window.innerWidth <= 480) {
+                return 2;
+            } else if (window.innerWidth <= 768) {
+                return 3;
+            } else {
+                return 6;
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            slideNext();
+            startAutoSlide();
+        });
+        prevBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            slidePrev();
+            startAutoSlide();
+        });
 
         fetchSliderComics(); // Gọi khi trang được tải
+
+        // Cập nhật slideWidth khi thay đổi kích thước cửa sổ
+        window.addEventListener('resize', () => {
+            updateSlideWidth();
+            slider.style.transform = `translateX(${offset}%)`; // Đảm bảo transform được cập nhật
+        });
     </script>
 </body>
 </html>
