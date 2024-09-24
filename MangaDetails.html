@@ -8,206 +8,35 @@
     <title>Manga3K</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/MangaDetail.css" type="text/css">
+
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap">
     <style>
-        .container {
+        #chapter-content {
+            display: flex;
+            flex-direction: column; /* Xếp theo cột */
+            align-items: center; /* Căn giữa theo chiều ngang */
+            justify-content: center; /* Căn giữa theo chiều dọc */
+        }
+        
+        .loader {
             text-align: center;
-            padding: 20px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 1200px;
-        }
-
-        #comic-thumb {
-            max-width: 200px;
-            display: block;
-            margin: 0 auto 10px;
-        }
-
-        .chapter-navigation {
-            display: flex;
-            justify-content: center;
-        }
-
-        .chapter-navigation button,
-        .chapter-navigation select {
-            margin: 0 5px;
-        }
-
-        #chapter-content img {
-            width: 70%;
-            max-width: 100%;
-            margin: 0;
-        }
-
-        .new-comics {
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
-            overflow: hidden;
-        }
-
-        .new-comics h3 {
-            margin-bottom: 10px;
-        }
-
-        .new-comics ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            transition: transform 0.5s ease;
-        }
-
-        .new-comics li {
-            margin: 10px;
-            text-align: center;
-            width: 200px;
-            cursor: pointer;
-        }
-
-        .new-comics img {
-            max-width: 150px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .comic-info {
-            margin-top: 5px;
-        }
-
-        .load-more {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .chapter-navigation {
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-
-        .chapter-navigation button,
-        .chapter-navigation select {
-            margin: 0;
-            /* Đảm bảo không có khoảng cách ngoài cho các phần tử */
-            padding: 5px 10px;
-            /* Thêm khoảng cách bên trong cho nút và dropdown */
-        }ol.breadcrumb{
-            padding-left: 25%;
-        }
-
-        /* CSS cập nhật cho màn hình điện thoại */
-        @media (max-width: 768px) {
-            .container {
-                width: 100%;
-                padding: 10px;
-            }
-
-            #comic-thumb {
-                max-width: 100%;
-                width: 100%;
-            }
-
-            #chapter-content img {
-                width: 100%;
-            }
-
-            .new-comics ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .new-comics li {
-                width: 100%;
-                margin: 10px 0;
-            }
-
-            .new-comics img {
-                max-width: 100%;
-            }ol.breadcrumb{
-                padding-left: 5%;
-            }
-        }
-        .chapter-navigation {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            
         }
         
-        .nav-button {
-            background-color: red; /* Màu nền của nút */
-            border: none;
-            cursor: pointer;
-            font-size: 24px; /* Kích thước icon */
-            color: white; /* Màu của icon */
-            transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu */
-            padding: 10px; /* Thêm khoảng đệm để nút lớn hơn */
-            border-radius: 5px; /* Làm tròn các góc của nút */
+        img {
+            max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng của container */
+            height: auto; /* Giữ tỉ lệ khung hình của hình ảnh */
+            margin-bottom: 10px; /* Khoảng cách giữa các hình ảnh */
         }
         
-        .nav-button:hover {
-            background-color: darkred; /* Màu nền khi hover */
-            color: #fff; /* Màu icon khi hover */
-        }
-        
-        #home-button {
-            font-size: 18px; /* Kích thước icon của nút trang chủ */
-        }
-        
-        #follow-button {
-            font-size: 24px; /* Kích thước icon của nút theo dõi */
-        }
-        .header2 {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            z-index: 1000; /* Đảm bảo nav nằm trên các phần tử khác */
-        
-        }
-        /* CSS for the chapter dropdown */
-#chapter-dropdown {
-    width: 200px; /* Đặt chiều rộng chiếm toàn bộ phần tử chứa */
-    padding: 10px; /* Thêm khoảng cách bên trong */
-    font-size: 16px; /* Thay đổi kích thước font */
-    border-radius: 8px; /* Bo tròn các góc */
-    border: 1px solid #ccc; /* Đặt màu viền */
-    background-color: #f9f9f9; /* Màu nền */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
-    transition: all 0.3s ease-in-out; /* Hiệu ứng chuyển tiếp */
-    cursor: pointer; /* Thay đổi con trỏ thành dạng pointer */
-}
-
-
-/* Hover effect */
-#chapter-dropdown:hover {
-    background-color: #f1f1f1; /* Thay đổi màu nền khi hover */
-    border-color: #888; /* Thay đổi màu viền khi hover */
-}
-
-/* Focus effect */
-#chapter-dropdown:focus {
-    outline: none; /* Xóa viền focus mặc định */
-    border-color: #007bff; /* Đổi màu viền khi được chọn */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng bóng đổ khi chọn */
-}/* Đặt hình ảnh làm background cho toàn bộ trang */
-
     </style>
 </head>
 
@@ -278,23 +107,24 @@
             </div>
         </div>
     </header>
-    <div class="content"style="background-color: #fff;">
-    <nav aria-label="breadcrumb" class="breadcrumb-container">
-        <ol class="breadcrumb">
-            <li  class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="index.html">Thể loại</a></li>
-            <li class="breadcrumb-item" id="manga-title-breadcrumb">Loading...</li>
-            <li class="breadcrumb-item active" aria-current="page" id="chapter-title-breadcrumb">Loading...</li>
-        </ol>
+    <div class="content" style="background-color: #fff;">
+        <nav aria-label="breadcrumb" class="breadcrumb-container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="index.html">Thể loại</a></li>
+                <li class="breadcrumb-item" id="manga-title-breadcrumb">Loading...</li>
+                <li class="breadcrumb-item active" aria-current="page" id="chapter-title-breadcrumb">Loading...</li>
+            </ol>
 
-    </nav>
-    <h1 id="comic-title" style="margin: 0;padding: 10px;text-align: center;">Loading... <span id="chapter-title">- Loading...</span></h1>
-</div>
+        </nav>
+        <h1 id="comic-title" style="margin: 0;padding: 10px;text-align: center;">Loading... <span id="chapter-title">-
+                Loading...</span></h1>
+    </div>
     <div class="chapter-navigation">
         <a href="index.html" id="home-button" class="nav-button">
             <i class="bi bi-house-door"></i>
         </a>
-        
+
         <button id="prev-chapter" class="nav-button">
             <i class="bi bi-chevron-left"></i>
         </button>
@@ -307,13 +137,12 @@
         </button>
     </div>
     <div class="container" style="padding-top: 0px;">
-        
-       
-        
-        
         <div id="chapter-content"></div>
+        <div id="preloder" style="display:none; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.8);">
+            <p>Đang tải...</p>
+        </div>
         
-    </div>
+     </div>
     <!-- Footer -->
     <footer class="footer bg-dark text-white py-4 mt-5">
         <div class="container-footer ">
@@ -324,227 +153,10 @@
     </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="Mangadetails.js"></script>
-    <script src="index.js"></script>
+    <script src="js/Mangadetails.js"></script>
+    <script src="js/index.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const slug = urlParams.get('slug');
-            const chapterUrl = urlParams.get('chapter'); // Lấy URL của chương từ tham số
-            const mangaApiUrl = `https://otruyenapi.com/v1/api/truyen-tranh/${slug}`;
-            let chapters = [];
-            let currentChapterIndex = 0;
-        
-            console.log('Slug:', slug);
-            console.log('Chapter URL:', chapterUrl);
-        
-            // Fetch manga data
-            fetch(mangaApiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.status === "success") {
-                        const manga = data.data.item;
-                        chapters = manga.chapters[0].server_data;
-        
-                        // Cập nhật tiêu đề và breadcrumb
-                        updateTitleAndBreadcrumb(manga.name);
-        
-                        const chapterDropdown = document.getElementById("chapter-dropdown");
-                        chapters.forEach((chapter, index) => {
-                            const option = document.createElement("option");
-                            option.value = index;
-                            option.textContent = `Chương ${chapter.chapter_name}`;
-                            chapterDropdown.appendChild(option);
-                        });
-        
-                        chapterDropdown.addEventListener("change", () => {
-                            currentChapterIndex = parseInt(chapterDropdown.value);
-                            updateChapter(chapters[currentChapterIndex].chapter_api_data);
-                            window.scrollTo(0, 0);
-                        });
-        
-                        document.getElementById("prev-chapter").addEventListener("click", () => {
-                            if (currentChapterIndex > 0) {
-                                currentChapterIndex--;
-                                chapterDropdown.value = currentChapterIndex;
-                                updateChapter(chapters[currentChapterIndex].chapter_api_data);
-                                window.scrollTo(0, 0);
-                            }
-                        });
-        
-                        document.getElementById("next-chapter").addEventListener("click", () => {
-                            if (currentChapterIndex < chapters.length - 1) {
-                                currentChapterIndex++;
-                                chapterDropdown.value = currentChapterIndex;
-                                updateChapter(chapters[currentChapterIndex].chapter_api_data);
-                                window.scrollTo(0, 0);
-                            }
-                        });
-        
-                        // Set initial chapter based on URL parameter or default to first chapter
-                        if (chapterUrl) {
-                            const initialChapter = chapters.find(chap => chap.chapter_api_data === decodeURIComponent(chapterUrl));
-                            if (initialChapter) {
-                                currentChapterIndex = chapters.indexOf(initialChapter);
-                                chapterDropdown.value = currentChapterIndex;
-                                updateChapter(initialChapter.chapter_api_data);
-                            } else {
-                                updateChapter(chapters[0].chapter_api_data);
-                            }
-                        } else {
-                            updateChapter(chapters[0].chapter_api_data);
-                        }
-                    } else {
-                        console.error('API response status not success:', data.status);
-                        const comicTitleElement = document.getElementById("comic-title");
-                        const chapterTitleElement = document.getElementById("chapter-title");
-                        if (comicTitleElement) comicTitleElement.textContent = "Không tìm thấy truyện tranh.";
-                        if (chapterTitleElement) chapterTitleElement.textContent = "";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching manga data:', error);
-                    const comicTitleElement = document.getElementById("comic-title");
-                    const chapterTitleElement = document.getElementById("chapter-title");
-                    if (comicTitleElement) comicTitleElement.textContent = "Không tìm thấy truyện tranh.";
-                    if (chapterTitleElement) chapterTitleElement.textContent = "";
-                });
-        
-            function updateTitleAndBreadcrumb(mangaName) {
-                const comicTitleElement = document.getElementById("comic-title");
-                const mangaTitleBreadcrumbElement = document.getElementById("manga-title-breadcrumb");
-                if (comicTitleElement) comicTitleElement.textContent = mangaName;
-                if (mangaTitleBreadcrumbElement) mangaTitleBreadcrumbElement.textContent = mangaName;
-            }
-        
-            function updateChapter(apiUrl) {
-                console.log('Loading chapter from URL:', apiUrl);
-                fetch(apiUrl)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(chapterData => {
-                        displayChapter(chapterData);
-        
-                        // Update breadcrumb and title
-                        const currentChapter = chapters[currentChapterIndex];
-                        const chapterTitleBreadcrumbElement = document.getElementById('chapter-title-breadcrumb');
-                        const chapterTitleElement = document.getElementById('chapter-title');
-                        if (chapterTitleBreadcrumbElement) chapterTitleBreadcrumbElement.textContent = `Chương ${currentChapter.chapter_name}`;
-                        if (chapterTitleElement) chapterTitleElement.textContent = `Chương ${currentChapter.chapter_name}`;
-        
-                        // Update URL and reload page
-                        const newUrl = `?slug=${slug}&chapter=${encodeURIComponent(currentChapter.chapter_api_data)}`;
-                        window.history.replaceState({}, '', newUrl);
-        
-                        // Hide/Show navigation buttons
-                        updateNavigationButtons();
-                    })
-                    .catch(error => console.error('Error fetching chapter data:', error));
-            }
-        
-            function displayChapter(data) {
-                const chapterContent = document.getElementById("chapter-content");
-                if (chapterContent) {
-                    chapterContent.innerHTML = '';
-        
-                    if (data.status === "success") {
-                        const chapter = data.data.item;
-                        const domainCdn = data.data.domain_cdn;
-                        const chapterPath = chapter.chapter_path;
-                        const chapterImages = chapter.chapter_image;
-        
-                        chapterImages.forEach(image => {
-                            const img = document.createElement("img");
-                            img.src = `${domainCdn}/${chapterPath}/${image.image_file}`;
-                            img.alt = `Page ${image.image_page}`;
-                            chapterContent.appendChild(img);
-                        });
-                    } else {
-                        chapterContent.innerHTML = 'Không thể tải chương này.';
-                        console.error('API chapter response status not success:', data.status);
-                    }
-                }
-            }
-        
-            function updateNavigationButtons() {
-                const prevButton = document.getElementById("prev-chapter");
-                const nextButton = document.getElementById("next-chapter");
-                if (prevButton) prevButton.style.display = (currentChapterIndex > 0) ? "block" : "none";
-                if (nextButton) nextButton.style.display = (currentChapterIndex < chapters.length - 1) ? "block" : "none";
-            }
-        });
-                // Mega menu functionality for genre
-                async function populateMegaMenu(genres) {
-                    const genreButtons = document.getElementById('genre-buttons');
-                    genreButtons.innerHTML = '';
-                    const numColumns = 4;
-                    const itemsPerColumn = Math.ceil(genres.length / numColumns);
-            
-                    for (let i = 0; i < numColumns; i++) {
-                        const column = document.createElement('div');
-                        column.className = 'genre-column';
-            
-                        for (let j = i * itemsPerColumn; j < (i + 1) * itemsPerColumn && j < genres.length; j++) {
-                            const genre = genres[j];
-                            const a = document.createElement('a');
-                            a.className = 'btn genre-button';
-                            a.textContent = genre.name;
-                            a.addEventListener('click', () => {
-                                window.location.href = `index.html?genre=${genre.slug}`;
-                            });
-                            column.appendChild(a);
-                        }
-            
-                        genreButtons.appendChild(column);
-                    }
-                }
-            
-                // Fetch and populate genres when page loads
-                async function fetchAndPopulateGenres() {
-                    try {
-                        const genresUrl = 'https://otruyenapi.com/v1/api/the-loai';
-                        const genresResponse = await fetch(genresUrl);
-                        const genresResult = await genresResponse.json();
-                        const genresData = genresResult.data;
-            
-                        if (genresData && genresData.items && Array.isArray(genresData.items)) {
-                            populateMegaMenu(genresData.items);
-                        } else {
-                            console.error('Dữ liệu thể loại không hợp lệ:', genresResult);
-                        }
-                    } catch (error) {
-                        console.error('Lỗi khi tải dữ liệu thể loại:', error);
-                    }
-                }
-            
-                fetchAndPopulateGenres();
-                    window.addEventListener('scroll', function() {
-                        var chapterNav = document.querySelector('.chapter-navigation');
-                        var header = document.querySelector('.header2');
-                        var headerHeight = header.offsetHeight;
-                        
-                        if (window.pageYOffset > headerHeight) {
-                            chapterNav.style.position = 'fixed';
-                            chapterNav.style.top = '0';
-                            chapterNav.style.left = '0';
-                            chapterNav.style.right = '0';
-                            chapterNav.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-                        } else {
-                            chapterNav.style.position = 'sticky';
-                            chapterNav.style.top = headerHeight + 'px';
-                            chapterNav.style.boxShadow = 'none';
-                        }
-                    });
-                    
+
     </script>
 </body>
 
