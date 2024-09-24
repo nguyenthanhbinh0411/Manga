@@ -1,0 +1,183 @@
+.container {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 1200px;
+}
+
+#comic-thumb {
+    max-width: 200px;
+    display: block;
+    margin: 0 auto 10px;
+}
+#chapter-content img {
+    width: 70%;
+    max-width: 100%;
+    margin: 0;
+}
+
+.new-comics {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+    overflow: hidden;
+}
+
+.new-comics h3 {
+    margin-bottom: 10px;
+}
+
+.new-comics ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    transition: transform 0.5s ease;
+}
+
+.new-comics li {
+    margin: 10px;
+    text-align: center;
+    width: 200px;
+    cursor: pointer;
+}
+
+.new-comics img {
+    max-width: 150px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.comic-info {
+    margin-top: 5px;
+}
+
+.load-more {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.chapter-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.chapter-navigation button,
+.chapter-navigation select {
+    margin: 0;
+    /* Đảm bảo không có khoảng cách ngoài cho các phần tử */
+    padding: 5px 10px;
+    /* Thêm khoảng cách bên trong cho nút và dropdown */
+}ol.breadcrumb{
+    padding-left: 25%;
+}
+
+/* CSS cập nhật cho màn hình điện thoại */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    #comic-thumb {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    #chapter-content img {
+        width: 100%;
+    }
+
+    .new-comics ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .new-comics li {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .new-comics img {
+        max-width: 100%;
+    }ol.breadcrumb{
+        padding-left: 5%;
+    }
+}
+.chapter-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.nav-button {
+    background-color: red; /* Màu nền của nút */
+    border: none;
+    cursor: pointer;
+    font-size: 24px; /* Kích thước icon */
+    color: white; /* Màu của icon */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Hiệu ứng chuyển màu */
+    padding: 10px; /* Thêm khoảng đệm để nút lớn hơn */
+    border-radius: 5px; /* Làm tròn các góc của nút */
+}
+
+.nav-button:hover {
+    background-color: darkred; /* Màu nền khi hover */
+    color: #fff; /* Màu icon khi hover */
+}
+
+#home-button {
+    font-size: 18px; /* Kích thước icon của nút trang chủ */
+}
+
+#follow-button {
+    font-size: 24px; /* Kích thước icon của nút theo dõi */
+}
+.header2 {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1000; /* Đảm bảo nav nằm trên các phần tử khác */
+
+}
+/* CSS for the chapter dropdown */
+#chapter-dropdown {
+width: 200px; /* Đặt chiều rộng chiếm toàn bộ phần tử chứa */
+padding: 10px; /* Thêm khoảng cách bên trong */
+font-size: 16px; /* Thay đổi kích thước font */
+border-radius: 8px; /* Bo tròn các góc */
+border: 1px solid #ccc; /* Đặt màu viền */
+background-color: #f9f9f9; /* Màu nền */
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
+transition: all 0.3s ease-in-out; /* Hiệu ứng chuyển tiếp */
+cursor: pointer; /* Thay đổi con trỏ thành dạng pointer */
+}
+
+
+/* Hover effect */
+#chapter-dropdown:hover {
+background-color: #f1f1f1; /* Thay đổi màu nền khi hover */
+border-color: #888; /* Thay đổi màu viền khi hover */
+}
+
+/* Focus effect */
+#chapter-dropdown:focus {
+outline: none; /* Xóa viền focus mặc định */
+border-color: #007bff; /* Đổi màu viền khi được chọn */
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng bóng đổ khi chọn */
+}/* Đặt hình ảnh làm background cho toàn bộ trang */
