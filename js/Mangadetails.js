@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
-    const chapterUrl = urlParams.get('chapter'); // Lấy URL của chương từ tham số
+    const chapterUrl = urlParams.get('chapter');
     const mangaApiUrl = `https://otruyenapi.com/v1/api/truyen-tranh/${slug}`;
     let chapters = [];
     let currentChapterIndex = 0;
-
-    console.log('Slug:', slug);
-    console.log('Chapter URL:', chapterUrl);
 
     // Fetch manga data
     fetch(mangaApiUrl)
@@ -71,20 +68,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateChapter(chapters[0].chapter_api_data);
                 }
             } else {
-                console.error('API response status not success:', data.status);
-                const comicTitleElement = document.getElementById("comic-title");
-                const chapterTitleElement = document.getElementById("chapter-title");
-                if (comicTitleElement) comicTitleElement.textContent = "Không tìm thấy truyện tranh.";
-                if (chapterTitleElement) chapterTitleElement.textContent = "";
+                showError("Không tìm thấy truyện tranh.");
             }
         })
-        .catch(error => {
-            console.error('Error fetching manga data:', error);
-            const comicTitleElement = document.getElementById("comic-title");
-            const chapterTitleElement = document.getElementById("chapter-title");
-            if (comicTitleElement) comicTitleElement.textContent = "Không tìm thấy truyện tranh.";
-            if (chapterTitleElement) chapterTitleElement.textContent = "";
-        });
+        .catch(showError);
+
+    function showError(error) {
+        console.error(error);
+        const comicTitleElement = document.getElementById("comic-title");
+        const chapterTitleElement = document.getElementById("chapter-title");
+        if (comicTitleElement) comicTitleElement.textContent = "Không tìm thấy truyện tranh.";
+        if (chapterTitleElement) chapterTitleElement.textContent = "";
+    }
 
     function updateTitleAndBreadcrumb(mangaName) {
         const comicTitleElement = document.getElementById("comic-title");
@@ -92,11 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (comicTitleElement) comicTitleElement.textContent = mangaName;
         if (mangaTitleBreadcrumbElement) mangaTitleBreadcrumbElement.textContent = mangaName;
     }
+
     function updateChapter(apiUrl) {
         console.log('Loading chapter from URL:', apiUrl);
 
         // Hiển thị loader khi bắt đầu tải
-        document.getElementById("preloder").style.display = "flex"; // Hiện loader
+        document.getElementById("preloder").style.display = "flex"; 
 
         fetch(apiUrl)
             .then(response => {
@@ -108,94 +104,86 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(chapterData => {
                 displayChapter(chapterData);
 
-                // Ẩn loader khi tải hoàn tất
                 document.getElementById("preloder").style.display = "none";
 
-                // Cập nhật breadcrumb và tiêu đề
                 const currentChapter = chapters[currentChapterIndex];
-                const chapterTitleBreadcrumbElement = document.getElementById('chapter-title-breadcrumb');
-                const chapterTitleElement = document.getElementById('chapter-title');
-                if (chapterTitleBreadcrumbElement) chapterTitleBreadcrumbElement.textContent = `Chương ${currentChapter.chapter_name}`;
-                if (chapterTitleElement) chapterTitleElement.textContent = `Chương ${currentChapter.chapter_name}`;
+                updateBreadcrumbAndTitle(currentChapter.chapter_name);
 
-                // Cập nhật URL và reload page
                 const newUrl = `?slug=${slug}&chapter=${encodeURIComponent(currentChapter.chapter_api_data)}`;
                 window.history.replaceState({}, '', newUrl);
 
-                // Cập nhật nút điều hướng
                 updateNavigationButtons();
             })
             .catch(error => {
                 console.error('Error fetching chapter data:', error);
-                // Ẩn loader khi có lỗi
                 document.getElementById("preloder").style.display = "none";
             });
     }
+
+    function updateBreadcrumbAndTitle(chapterName) {
+        const chapterTitleBreadcrumbElement = document.getElementById('chapter-title-breadcrumb');
+        const chapterTitleElement = document.getElementById('chapter-title');
+        if (chapterTitleBreadcrumbElement) chapterTitleBreadcrumbElement.textContent = `Chương ${chapterName}`;
+        if (chapterTitleElement) chapterTitleElement.textContent = `Chương ${chapterName}`;
+    }
+
     function displayChapter(data) {
         const chapterContent = document.getElementById("chapter-content");
         if (chapterContent) {
-            chapterContent.innerHTML = ''; // Xóa nội dung cũ
-    
+            chapterContent.innerHTML = ''; 
+
             if (data.status === "success") {
                 const chapter = data.data.item;
                 const domainCdn = data.data.domain_cdn;
                 const chapterPath = chapter.chapter_path;
                 const chapterImages = chapter.chapter_image;
-    
-                chapterImages.forEach((image, index) => {
-                    // Tạo phần tử loader cho mỗi hình ảnh
+
+                chapterImages.forEach(image => {
                     const loader = document.createElement("div");
-                    loader.className = "loader"; // Giả sử bạn đã có CSS cho loader
-                    loader.textContent = ""; // Nội dung loader
-                    chapterContent.appendChild(loader); // Thêm loader vào chapterContent
-    
-                    // Tạo phần tử img và đặt thuộc tính src
-                    const img = document.createElement("img");
-                    img.src = `${domainCdn}/${chapterPath}/${image.image_file}`;
-                    img.alt = `Page ${image.image_page}`;
-                    img.loading = "lazy"; // Lazy loading
-    
-                    // Ẩn hình ảnh cho đến khi nó được tải
-                    img.style.display = 'none'; 
-    
-                    // Thêm sự kiện onload để ẩn loader khi hình ảnh đã tải xong
-                    img.onload = () => {
-                        img.style.display = 'block'; // Hiển thị hình ảnh
-                        loader.style.display = 'none'; // Ẩn loader
-                    };
-    
-                    img.onerror = () => {
-                        // Xử lý lỗi nếu hình ảnh không tải được
-                        console.error(`Error loading image: ${img.src}`);
-                        loader.textContent = 'Lỗi tải hình ảnh'; // Thông báo lỗi
-                    };
-    
-                    // Thêm hình ảnh vào chapterContent
-                    chapterContent.appendChild(img);
+                    loader.className = "loader";
+                    chapterContent.appendChild(loader);
+
+                    const imageUrl = `${domainCdn}/${chapterPath}/${image.image_file}`;
+                    preloadImage(imageUrl, () => {
+                        const img = document.createElement("img");
+                        img.src = imageUrl;
+                        img.alt = `Page ${image.image_page}`;
+                        img.style.display = 'block';
+                        loader.style.display = 'none';
+                        chapterContent.appendChild(img);
+                    });
                 });
             } else {
                 chapterContent.innerHTML = 'Không thể tải chương này.';
-                console.error('API chapter response status not success:', data.status);
             }
         }
     }
-    
+
+    function preloadImage(src, callback) {
+        const img = new Image();
+        img.src = src;
+        img.onload = callback;
+        img.onerror = () => {
+            console.error('Error preloading image:', src);
+        };
+    }
+
     function updateNavigationButtons() {
         const prevButton = document.getElementById("prev-chapter");
         const nextButton = document.getElementById("next-chapter");
 
         if (prevButton) {
             prevButton.style.display = (currentChapterIndex > 0) ? "inline-block" : "none";
-            prevButton.disabled = (currentChapterIndex === 0); // Vô hiệu hóa nút nếu là chương đầu
+            prevButton.disabled = (currentChapterIndex === 0);
         }
 
         if (nextButton) {
             nextButton.style.display = (currentChapterIndex < chapters.length - 1) ? "inline-block" : "none";
-            nextButton.disabled = (currentChapterIndex === chapters.length - 1); // Vô hiệu hóa nút nếu là chương cuối
+            nextButton.disabled = (currentChapterIndex === chapters.length - 1);
         }
     }
-
 });
+
 // Mega menu functionality for genre
 async function populateMegaMenu(genres) {
     const genreButtons = document.getElementById('genre-buttons');
