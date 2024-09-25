@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Tạo phần tử loader cho mỗi hình ảnh
                     const loader = document.createElement("div");
                     loader.className = "loader"; // Giả sử bạn đã có CSS cho loader
-                    loader.textContent = "Đang tải..."; // Nội dung loader
+                    loader.textContent = ""; // Nội dung loader
                     chapterContent.appendChild(loader); // Thêm loader vào chapterContent
     
                     // Tạo phần tử img và đặt thuộc tính src
