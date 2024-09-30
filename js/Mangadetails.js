@@ -130,44 +130,50 @@ document.addEventListener("DOMContentLoaded", () => {
     function displayChapter(data) {
         const chapterContent = document.getElementById("chapter-content");
         if (chapterContent) {
-            chapterContent.innerHTML = ''; 
-
+            chapterContent.innerHTML = ''; // Clear previous chapter content
+    
             if (data.status === "success") {
                 const chapter = data.data.item;
                 const domainCdn = data.data.domain_cdn;
                 const chapterPath = chapter.chapter_path;
                 const chapterImages = chapter.chapter_image;
-
-                chapterImages.forEach(image => {
-                    const loader = document.createElement("div");
-                    loader.className = "loader";
-                    chapterContent.appendChild(loader);
-
+    
+                // Tạo mảng các Promise để tải trước tất cả ảnh
+                const imagePromises = chapterImages.map(image => {
                     const imageUrl = `${domainCdn}/${chapterPath}/${image.image_file}`;
-                    preloadImage(imageUrl, () => {
+                    return preloadImageWithPromise(imageUrl).then(() => {
                         const img = document.createElement("img");
                         img.src = imageUrl;
                         img.alt = `Page ${image.image_page}`;
                         img.style.display = 'block';
-                        loader.style.display = 'none';
-                        chapterContent.appendChild(img);
+                        return img; // Trả về thẻ img sau khi tải xong
                     });
                 });
+    
+                // Chờ tất cả ảnh tải xong rồi mới thêm vào DOM
+                Promise.all(imagePromises)
+                    .then(images => {
+                        images.forEach(img => chapterContent.appendChild(img));
+                    })
+                    .catch(error => {
+                        console.error('Error loading images:', error);
+                        chapterContent.innerHTML = 'Không thể tải chương này.';
+                    });
             } else {
                 chapterContent.innerHTML = 'Không thể tải chương này.';
             }
         }
     }
-
-    function preloadImage(src, callback) {
-        const img = new Image();
-        img.src = src;
-        img.onload = callback;
-        img.onerror = () => {
-            console.error('Error preloading image:', src);
-        };
+    
+    function preloadImageWithPromise(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = resolve;
+            img.onerror = reject;
+        });
     }
-
+    
     function updateNavigationButtons() {
         const prevButton = document.getElementById("prev-chapter");
         const nextButton = document.getElementById("next-chapter");
